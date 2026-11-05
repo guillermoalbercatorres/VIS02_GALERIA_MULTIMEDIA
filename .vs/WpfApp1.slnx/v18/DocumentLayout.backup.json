@@ -1,0 +1,83 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|c:\\users\\guillermo\\desktop\\vs_windows\\wpfapp1\\wpfapp1\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|solutionrelative:wpfapp1\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|c:\\users\\guillermo\\desktop\\vs_windows\\wpfapp1\\wpfapp1\\window1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|solutionrelative:wpfapp1\\window1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|c:\\users\\guillermo\\desktop\\vs_windows\\wpfapp1\\wpfapp1\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|solutionrelative:wpfapp1\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|c:\\users\\guillermo\\desktop\\vs_windows\\wpfapp1\\wpfapp1\\window1.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7605DAD6-FF29-68CC-A841-EC859FB1D9DB}|WpfApp1\\WpfApp1.csproj|solutionrelative:wpfapp1\\window1.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Window1.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Window1.xaml.cs",
+              "RelativeDocumentMoniker": "WpfApp1\\Window1.xaml.cs",
+              "ToolTip": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Window1.xaml.cs",
+              "RelativeToolTip": "WpfApp1\\Window1.xaml.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAAABkAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-04T09:12:49.152Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Window1.xaml",
+              "DocumentMoniker": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Window1.xaml",
+              "RelativeDocumentMoniker": "WpfApp1\\Window1.xaml",
+              "ToolTip": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Window1.xaml",
+              "RelativeToolTip": "WpfApp1\\Window1.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-04T09:10:26.69Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "WpfApp1\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\MainWindow.xaml",
+              "RelativeToolTip": "WpfApp1\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-04T09:09:02.219Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "WpfApp1\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\MainWindow.xaml.cs",
+              "RelativeToolTip": "WpfApp1\\MainWindow.xaml.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAqwDkAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-04T09:08:58.254Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
