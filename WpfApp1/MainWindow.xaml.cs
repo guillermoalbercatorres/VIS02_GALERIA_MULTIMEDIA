@@ -52,7 +52,8 @@ namespace WpfApp1
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            string ruta = "C:\\Users\\Guillermo\\Desktop\\hola.txt";
+            // string ruta = "C:\\Users\\Guillermo\\Desktop\\hola.txt";
+            string ruta = "C:\\Users\\raulms\\Desktop\\hola.txt";
             using (StreamWriter sw = new StreamWriter(ruta, append: false))
             {
                 sw.WriteLine(textoBloque.Text);
