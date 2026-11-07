@@ -4,65 +4,61 @@ Este repositorio contiene la solución en WPF (.NET) para la práctica **VIS02**
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto (Arquitectura Estándar)
 
-A continuación se muestra el mapa completo de archivos y carpetas del proyecto:
+El proyecto sigue una organización limpia por responsabilidades (patrón estándar en desarrollo .NET/WPF), separando las vistas de interfaz, los recursos de diseño y la configuración general:
 
 ```text
 VIS02/
-├── .gitignore                  # Exclusiones de Git (bin, obj, .vs, pdfs, temporales)
-├── enunciado.md                # Requisitos detallados y especificaciones de la práctica
-├── README.md                   # Documentación de arquitectura, archivos y tareas pendientes
-├── WpfApp1.slnx                # Archivo de solución de Visual Studio
-└── WpfApp1/                    # Proyecto WPF
-    ├── WpfApp1.csproj          # Configuración del proyecto (.NET 10 WPF)
-    ├── App.xaml                # Recursos globales a nivel de aplicación (Colores Normal/Noche)
-    ├── App.xaml.cs             # Lógica del ciclo de vida de la aplicación
+├── .gitignore                      # Exclusiones de Git (bin, obj, .vs, pdfs, temporales)
+├── enunciado.md                    # Requisitos detallados y especificaciones de la práctica
+├── README.md                       # Documentación de arquitectura, reparto y tareas
+├── WpfApp1.slnx                    # Archivo de solución de Visual Studio
+└── WpfApp1/                        # Proyecto WPF
+    ├── WpfApp1.csproj              # Configuración del proyecto (.NET 10 WPF)
+    ├── App.xaml                    # Recursos globales (Colores Modo Normal / Modo Noche)
+    ├── App.xaml.cs                 # Lógica del ciclo de vida de la aplicación
     │
-    ├── NAVEWIN.xaml            # Ventana Principal (Explorador, TreeView, Selección carpeta)
-    ├── NAVEWIN.xaml.cs         # Lógica de navegación y llamada a DETAILWIN
+    ├── Views/                      # Carpeta de Vistas / Ventanas (Interfaces de usuario)
+    │   ├── NAVEWIN.xaml            # Ventana Principal (Explorador TreeView, Selección de carpeta)
+    │   ├── NAVEWIN.xaml.cs         # Lógica de navegación y llamada a DETAILWIN
+    │   ├── DETAILWIN.xaml          # Ventana de Detalle (Visores según tipo de archivo)
+    │   └── DETAILWIN.xaml.cs       # Lógica de carga dinámica, zoom, reproducción y cierre
     │
-    ├── DETAILWIN.xaml          # Ventana de Detalle (Visores según tipo de archivo)
-    ├── DETAILWIN.xaml.cs       # Lógica de carga dinámica, zoom, reproducción y cierre
-    │
-    └── Resources/              # Diccionarios de Recursos independientes (XAML)
-        ├── ImageStyles.xaml    # Estilos para visor de imágenes y controles de Zoom
-        ├── MediaStyles.xaml    # Estilos para reproductor multimedia (Play/Pause)
-        ├── TextStyles.xaml     # Estilos para visualización de texto (Font y FontSize)
-        └── MarkdownStyles.xaml # Estilos para visor Markdown (.md)
+    └── Resources/                  # Diccionarios de Recursos independientes (XAML)
+        ├── ImageStyles.xaml        # Estilos para visor de imágenes y controles de Zoom
+        ├── MediaStyles.xaml        # Estilos para reproductor multimedia (Play/Pause)
+        ├── TextStyles.xaml         # Estilos para visualización de texto (Font y FontSize)
+        └── MarkdownStyles.xaml     # Estilos para visor Markdown (.md)
 ```
 
 ---
 
-## 🧩 ¿Qué hace cada archivo y cómo se estructuran?
+## 👥 Reparto de Tareas y Flujo de Trabajo en Paralelo (3 Personas)
 
-### 1. `App.xaml` (Recursos Globales de la Aplicación)
-- **Propósito:** Alojar los colores de la aplicación para el **Modo Normal** (fondo claro, letra oscura) y **Modo Noche** (fondo oscuro, letra clara) aplicables a `Grid`, `TextBox` y `Label`.
-- **Ventaja:** Cualquier ventana puede referenciar estos pinceles (`DynamicResource`) para cambiar de color al unísono.
-- **Punto de Entrada:** Configurado con `StartupUri="NAVEWIN.xaml"`.
+Las tareas se han diseñado para ser **100% independientes**, permitiendo que cada miembro trabaje en su propia rama sin generar bloqueos ni conflictos en Git:
 
-### 2. `NAVEWIN` (Ventana Principal de Navegación)
-- **`NAVEWIN.xaml`:** Contiene la interfaz de navegación (un control `TreeView` para explorar carpetas/archivos, botón para elegir carpeta y selector de Modo Normal/Noche). En su `Window.Resources` define los estilos propios para sus botones.
-- **`NAVEWIN.xaml.cs`:** 
-  1. Al arrancar, obtiene la ruta de la carpeta *"Mis imágenes"* del sistema (`Environment.SpecialFolder.MyPictures`) y la carga en el `TreeView`.
-  2. Si el usuario pulsa en seleccionar carpeta, muestra el diálogo para cambiar el directorio raíz.
-  3. Al seleccionar un archivo que **no** sea carpeta, instancia y abre `DETAILWIN` pasándole la ruta del archivo.
-  4. Expone su estado de tema (`EsModoNoche`) para que `DETAILWIN` lo consulte.
+```mermaid
+flowchart TD
+    subgraph Base ["Punto de Encuentro"]
+        T1["Persona 1: Recursos y Estilos<br/>(App.xaml y carpeta Resources/)"]
+    end
 
-### 3. `DETAILWIN` (Ventana de Detalle)
-- **`DETAILWIN.xaml`:** Contiene los diferentes contenedores/controles para mostrar el contenido según el tipo de archivo (`Image`, `MediaElement`, `TextBox`, visor `Markdown`) y los botones de acción (`Zoom`, `Play/Pause`, `Font`, botón `Cancelar` con `IsCancel="True"`).
-- **`DETAILWIN.xaml.cs`:**
-  1. Recibe la ruta del archivo en su constructor (`new DETAILWIN(rutaArchivo)`).
-  2. Detecta la extensión del archivo y activa el visor correspondiente.
-  3. Consulta a su ventana padre (`Owner as NAVEWIN`) para heredar el tema (Normal/Noche).
-  4. Gestiona el evento de cierre (`Closing`) para que al pulsar `X` o <kbd>Alt</kbd> + <kbd>F4</kbd> solo se cierre esta ventana y nunca la aplicación completa.
+    subgraph Paralelo ["Desarrollo en Paralelo"]
+        T2["Persona 2: NAVEWIN<br/>(Views/NAVEWIN.*)"]
+        T3["Persona 3: DETAILWIN<br/>(Views/DETAILWIN.*)"]
+    end
 
-### 4. `Resources/` (Diccionarios de Recursos Modulares)
-Archivos XAML independientes que se importan en `DETAILWIN` para cumplir el requisito de diccionarios de recursos:
-- **`ImageStyles.xaml`:** Estilos para la imagen y botones de Zoom.
-- **`MediaStyles.xaml`:** Estilos para controles multimedia (Play, Pause, Stop).
-- **`TextStyles.xaml`:** Estilos para el cuadro de texto y selectores de fuente.
-- **`MarkdownStyles.xaml`:** Estilos visuales del visor Markdown.
+    T1 -. "Define nombres de pinceles (FondoBrush, TextoBrush)" .-> T2
+    T1 -. "Define estilos de botones y controles" .-> T3
+    T2 ==>|"Llama con new DETAILWIN(rutaArchivo)"| T3
+```
+
+### El "Contrato de Integración" entre los 3
+Para trabajar de forma autónoma sin depender de que el otro haya terminado:
+1. **Persona de Estilos y Temas**: Define en `App.xaml` los recursos dinámicos (`DynamicResource FondoBrush`, `DynamicResource TextoBrush`). Las otras dos personas simplemente usan esas claves en el `Background` y `Foreground` de sus vistas.
+2. **Persona de NAVEWIN**: Puede probar su explorador `TreeView` de carpetas abriendo la ventana con `new DETAILWIN(ruta).Show()` o con un `MessageBox.Show(ruta)` sin necesidad de que los visores estén acabados.
+3. **Persona de DETAILWIN**: Puede probar sus visores (zoom de imágenes, audio/vídeo, texto y markdown) cambiando temporalmente `StartupUri="Views/DETAILWIN.xaml"` en `App.xaml` o pasándole una ruta fija en su constructor para probarla con <kbd>F5</kbd>.
 
 ---
 
@@ -72,8 +68,8 @@ Archivos XAML independientes que se importan en `DETAILWIN` para cumplir el requ
 sequenceDiagram
     autonumber
     actor Usuario
-    participant NW as NAVEWIN (Principal)
-    participant DW as DETAILWIN (Detalle)
+    participant NW as NAVEWIN (Views/NAVEWIN)
+    participant DW as DETAILWIN (Views/DETAILWIN)
     participant SO as Sistema Operativo
 
     Usuario->>NW: Selecciona un archivo en el TreeView
@@ -93,30 +89,30 @@ sequenceDiagram
 
 ---
 
-## 📋 Lista Completa de Tareas Pendientes de Implementar
+## 📋 Lista Completa de Tareas Pendientes por Módulo
 
-A continuación se detalla todo lo que falta por desarrollar respecto al enunciado oficial:
-
-### 1. Sistema de Estilos y Temas (Requisito de Evaluación)
-- [ ] **Definición de Temas en `App.xaml`**:
-  - Pinceles (`SolidColorBrush`) para Modo Normal: `Background` (claro) y `Foreground` (oscuro).
-  - Pinceles para Modo Noche: `Background` (oscuro) y `Foreground` (claro).
+### Módulo 1: Sistema de Estilos y Temas (`App.xaml` y `Resources/`)
+- [ ] **Definición de Colores en `App.xaml`**:
+  - Pinceles (`SolidColorBrush`) para **Modo Normal**: `FondoBrush` (claro) y `TextoBrush` (oscuro).
+  - Pinceles para **Modo Noche**: `FondoBrush` (oscuro) y `TextoBrush` (claro).
   - Estilos base para `Grid`, `TextBox` y `Label` vinculados a estos recursos dinámicos.
 - [ ] **Lógica de Conmutación de Tema**:
-  - Mecanismo en C# para alternar entre la paleta Normal y Noche en tiempo de ejecución.
+  - Mecanismo en C# para alternar entre el diccionario/paleta Normal y Noche en tiempo de ejecución.
 - [ ] **Estilos en `Window.Resources`**:
   - Estilos de botones diferenciados en `NAVEWIN.xaml` (bordes, fuentes, padding).
   - Estilos de botones diferenciados en `DETAILWIN.xaml`.
 - [ ] **Completar Diccionarios de Recursos (`Resources/`)**:
   - `ImageStyles.xaml`: Estilos para botones de Zoom In / Zoom Out.
-  - `MediaStyles.xaml`: Estilos para botones multimedia (Play, Pause, etc.).
+  - `MediaStyles.xaml`: Estilos para controles multimedia (Play, Pause, etc.).
   - `TextStyles.xaml`: Estilos para fuentes y controles de tamaño.
   - `MarkdownStyles.xaml`: Estilos específicos para la presentación Markdown.
 
-### 2. Ventana Principal (`NAVEWIN`)
+---
+
+### Módulo 2: Ventana Principal (`Views/NAVEWIN.*`)
 - [ ] **Explorador con `TreeView`**:
-  - Reemplazar el `OpenFileDialog` inicial por un control `TreeView` integrado en la ventana.
-  - Al iniciar, cargar automáticamente la carpeta del sistema **"Mis imágenes"** (`Environment.SpecialFolder.MyPictures`).
+  - Sustituir el `OpenFileDialog` por un control `TreeView` integrado en la ventana.
+  - Al iniciar la app, cargar automáticamente la carpeta del sistema **"Mis imágenes"** (`Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)`).
   - Mostrar carpetas y archivos con nombres e iconos representativos.
   - Permitir desplegar y navegar por subcarpetas.
 - [ ] **Diálogo de Selección de Carpeta**:
@@ -124,9 +120,11 @@ A continuación se detalla todo lo que falta por desarrollar respecto al enuncia
 - [ ] **Selector de Modo Noche**:
   - Control (Toggle / CheckBox / Botón) en la interfaz para alternar entre Modo Normal y Modo Noche.
 - [ ] **Apertura de archivos al hacer clic**:
-  - Doble clic o selección de un archivo que abra la ventana `DETAILWIN` pasándole la ruta seleccionada.
+  - Doble clic o selección de un archivo que abra la ventana `DETAILWIN` pasándole la ruta seleccionada (`new DETAILWIN(ruta).Show()`).
 
-### 3. Ventana de Detalle (`DETAILWIN`)
+---
+
+### Módulo 3: Ventana de Detalle (`Views/DETAILWIN.*`)
 - [ ] **Visor de Imágenes**:
   - Componente `<Image>` nativo dentro de `DETAILWIN` (no visor externo).
   - Botones funcionales para **Zoom In** y **Zoom Out** (mediante `ScaleTransform` o ajuste de dimensiones).
