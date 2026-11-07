@@ -23,42 +23,55 @@ namespace WpfApp1
             InitializeComponent();
         }
 
+
+        string ruta;
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            /*string txt = "Hola señor como esta usted";
-            Window1 w = new Window1(txt);
-            w.Show();*/
-            string ruta = "C:\\Users\\Guillermo\\Desktop\\hola.txt";
-
-            if (File.Exists(ruta))
+            if (File.Exists(this.ruta))
             {
-                string[] lineas = File.ReadAllLines(ruta);
+                MessageBox.Show(this.ruta.Contains(".txt")+" , contiene .txt");
 
-                Console.WriteLine("---- Contenido del archivo ----");
-                string text = "";
-
-                foreach (string linea in lineas)
+                if (this.ruta.Contains(".txt"))
                 {
-                    text += lineas;
-                    
+                    string[] lineas = File.ReadAllLines(this.ruta);
+
+                    textoBloque.Text = string.Join("\n", lineas);
                 }
-
-                
-
-                textoBloque.Text= string.Join("\n", lineas);
+                else if (this.ruta.Contains(".jpg"))
+                {
+                    Window1 w1 = new Window1(this.ruta);
+                    w1.Show();
+                }
             }
-
+            else
+            {
+                MessageBox.Show("El archivo no existe o la ruta no es válida.");
             }
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            string ruta = "C:\\Users\\Guillermo\\Desktop\\hola.txt";
-            using (StreamWriter sw = new StreamWriter(ruta, append: false))
+            if (string.IsNullOrWhiteSpace(this.ruta))
             {
-                sw.WriteLine(textoBloque.Text);
-
+                MessageBox.Show("Primero introduce una ruta.");
+                return;
             }
+
+            File.WriteAllText(this.ruta, textoBloque.Text);
+
+            MessageBox.Show("Archivo guardado correctamente.");
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            // C:\\Users\\Guillermo\\Desktop\\hola.txt
+
+            this.ruta = ModificarRuta.Text.Trim();
+
+            MessageBox.Show("Ruta establecida: " + this.ruta);
+        }
+
     }
 
 }
