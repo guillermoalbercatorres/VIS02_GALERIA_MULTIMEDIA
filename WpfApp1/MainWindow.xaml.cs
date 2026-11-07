@@ -53,6 +53,7 @@ namespace WpfApp1
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(this.ruta))
+            using (StreamWriter sw = new StreamWriter(ruta, append: false))
             {
                 MessageBox.Show("Primero introduce una ruta.");
                 return;

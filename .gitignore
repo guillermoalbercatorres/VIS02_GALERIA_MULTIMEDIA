@@ -1,3 +1,30 @@
+## =====================================
+## Visual Studio / Caches
+## =====================================
 .vs/
-**/bin/
-**/obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.cache
+
+## =====================================
+## Archivos de Compilación y Salida (.NET / C#)
+## =====================================
+[Bb]in/
+[Oo]bj/
+**/[Bb]in/
+**/[Oo]bj/
+
+## =====================================
+## Enunciados o archivos locales no requeridos en el repo
+## =====================================
+*.pdf
+
+## =====================================
+## Logs y Archivos Temporales
+## =====================================
+*.log
+*.tmp
+*.bak
+>>>>>>> origin/main
