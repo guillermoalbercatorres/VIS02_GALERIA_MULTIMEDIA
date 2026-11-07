@@ -5,11 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="NAVEWIN - Navegador y Galería Multimedia" Height="600" Width="900">
-    <Window.Resources>
-        <!-- Estilos específicos para botones de NAVEWIN manteniendo colores de App.xaml -->
-    </Window.Resources>
+        Title="NAVEWIN" Height="450" Width="800">
     <Grid>
-        <!-- Estructura del explorador: TreeView, botones de selección de carpeta y modo noche -->
+        <TextBox x:Name="textoBloque" TextWrapping="Wrap" AcceptsReturn="true" Text="TextBox" Margin="104,112,398,47" RenderTransformOrigin="0.5,0.5">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.001"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
+        <Button Content="Añadir" HorizontalAlignment="Left" Margin="456,161,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click_1"/>
+
     </Grid>
 </Window>

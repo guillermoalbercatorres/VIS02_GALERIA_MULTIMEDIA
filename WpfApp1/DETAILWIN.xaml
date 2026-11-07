@@ -5,11 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="DETAILWIN - Detalle de Archivo" Height="550" Width="850">
-    <Window.Resources>
-        <!-- Importación de diccionarios de recursos y estilos propios de DETAILWIN -->
-    </Window.Resources>
+        Title="DETAILWIN" Height="450" Width="800">
     <Grid>
-        <!-- Contenedor dinámico según tipo de archivo (Image, MediaElement, TextBox, Markdown) -->
+        <Button Content="Button" HorizontalAlignment="Left" Margin="400,188,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+
     </Grid>
 </Window>

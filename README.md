@@ -12,7 +12,7 @@ A continuación se muestra el mapa completo de archivos y carpetas del proyecto:
 VIS02/
 ├── .gitignore                  # Exclusiones de Git (bin, obj, .vs, pdfs, temporales)
 ├── enunciado.md                # Requisitos detallados y especificaciones de la práctica
-├── README.md                   # Documentación de arquitectura, archivos y comunicación
+├── README.md                   # Documentación de arquitectura, archivos y tareas pendientes
 ├── WpfApp1.slnx                # Archivo de solución de Visual Studio
 └── WpfApp1/                    # Proyecto WPF
     ├── WpfApp1.csproj          # Configuración del proyecto (.NET 10 WPF)
@@ -25,16 +25,11 @@ VIS02/
     ├── DETAILWIN.xaml          # Ventana de Detalle (Visores según tipo de archivo)
     ├── DETAILWIN.xaml.cs       # Lógica de carga dinámica, zoom, reproducción y cierre
     │
-    ├── Resources/              # Diccionarios de Recursos independientes (XAML)
-    │   ├── ImageStyles.xaml    # Estilos para visor de imágenes y controles de Zoom
-    │   ├── MediaStyles.xaml    # Estilos para reproductor multimedia (Play/Pause)
-    │   ├── TextStyles.xaml     # Estilos para visualización de texto (Font y FontSize)
-    │   └── MarkdownStyles.xaml # Estilos para visor Markdown (.md)
-    │
-    ├── MainWindow.xaml         # (Código heredado / pruebas de inicio de Guille)
-    ├── MainWindow.xaml.cs      # (Código heredado / pruebas de inicio de Guille)
-    ├── Window1.xaml            # (Código heredado / pruebas de inicio de Guille)
-    └── Window1.xaml.cs         # (Código heredado / pruebas de inicio de Guille)
+    └── Resources/              # Diccionarios de Recursos independientes (XAML)
+        ├── ImageStyles.xaml    # Estilos para visor de imágenes y controles de Zoom
+        ├── MediaStyles.xaml    # Estilos para reproductor multimedia (Play/Pause)
+        ├── TextStyles.xaml     # Estilos para visualización de texto (Font y FontSize)
+        └── MarkdownStyles.xaml # Estilos para visor Markdown (.md)
 ```
 
 ---
@@ -44,6 +39,7 @@ VIS02/
 ### 1. `App.xaml` (Recursos Globales de la Aplicación)
 - **Propósito:** Alojar los colores de la aplicación para el **Modo Normal** (fondo claro, letra oscura) y **Modo Noche** (fondo oscuro, letra clara) aplicables a `Grid`, `TextBox` y `Label`.
 - **Ventaja:** Cualquier ventana puede referenciar estos pinceles (`DynamicResource`) para cambiar de color al unísono.
+- **Punto de Entrada:** Configurado con `StartupUri="NAVEWIN.xaml"`.
 
 ### 2. `NAVEWIN` (Ventana Principal de Navegación)
 - **`NAVEWIN.xaml`:** Contiene la interfaz de navegación (un control `TreeView` para explorar carpetas/archivos, botón para elegir carpeta y selector de Modo Normal/Noche). En su `Window.Resources` define los estilos propios para sus botones.
@@ -94,3 +90,58 @@ sequenceDiagram
     Usuario->>DW: Cierra ventana (X / Alt+F4 / Botón Cancelar)
     DW-->>Usuario: Cierra solo DETAILWIN (NAVEWIN sigue activa)
 ```
+
+---
+
+## 📋 Lista Completa de Tareas Pendientes de Implementar
+
+A continuación se detalla todo lo que falta por desarrollar respecto al enunciado oficial:
+
+### 1. Sistema de Estilos y Temas (Requisito de Evaluación)
+- [ ] **Definición de Temas en `App.xaml`**:
+  - Pinceles (`SolidColorBrush`) para Modo Normal: `Background` (claro) y `Foreground` (oscuro).
+  - Pinceles para Modo Noche: `Background` (oscuro) y `Foreground` (claro).
+  - Estilos base para `Grid`, `TextBox` y `Label` vinculados a estos recursos dinámicos.
+- [ ] **Lógica de Conmutación de Tema**:
+  - Mecanismo en C# para alternar entre la paleta Normal y Noche en tiempo de ejecución.
+- [ ] **Estilos en `Window.Resources`**:
+  - Estilos de botones diferenciados en `NAVEWIN.xaml` (bordes, fuentes, padding).
+  - Estilos de botones diferenciados en `DETAILWIN.xaml`.
+- [ ] **Completar Diccionarios de Recursos (`Resources/`)**:
+  - `ImageStyles.xaml`: Estilos para botones de Zoom In / Zoom Out.
+  - `MediaStyles.xaml`: Estilos para botones multimedia (Play, Pause, etc.).
+  - `TextStyles.xaml`: Estilos para fuentes y controles de tamaño.
+  - `MarkdownStyles.xaml`: Estilos específicos para la presentación Markdown.
+
+### 2. Ventana Principal (`NAVEWIN`)
+- [ ] **Explorador con `TreeView`**:
+  - Reemplazar el `OpenFileDialog` inicial por un control `TreeView` integrado en la ventana.
+  - Al iniciar, cargar automáticamente la carpeta del sistema **"Mis imágenes"** (`Environment.SpecialFolder.MyPictures`).
+  - Mostrar carpetas y archivos con nombres e iconos representativos.
+  - Permitir desplegar y navegar por subcarpetas.
+- [ ] **Diálogo de Selección de Carpeta**:
+  - Botón para abrir diálogo de selección de carpeta (`FolderBrowserDialog` o `OpenFolderDialog`) para cambiar el directorio raíz explorado.
+- [ ] **Selector de Modo Noche**:
+  - Control (Toggle / CheckBox / Botón) en la interfaz para alternar entre Modo Normal y Modo Noche.
+- [ ] **Apertura de archivos al hacer clic**:
+  - Doble clic o selección de un archivo que abra la ventana `DETAILWIN` pasándole la ruta seleccionada.
+
+### 3. Ventana de Detalle (`DETAILWIN`)
+- [ ] **Visor de Imágenes**:
+  - Componente `<Image>` nativo dentro de `DETAILWIN` (no visor externo).
+  - Botones funcionales para **Zoom In** y **Zoom Out** (mediante `ScaleTransform` o ajuste de dimensiones).
+- [ ] **Visor Multimedia (Audio / Vídeo)**:
+  - Componente `<MediaElement>` para reproducir `.mp3`, `.mp4`, `.wav`, etc.
+  - Botones funcionales de control: **Play** y **Pause**.
+- [ ] **Visor de Texto Plano (.txt)**:
+  - Trasladar el visor de texto a `DETAILWIN`.
+  - Botones funcionales para cambiar la **Fuente (Font)** y aumentar/disminuir el tamaño de letra (**FontSize +/-**).
+- [ ] **Visor Markdown (.md)**:
+  - Añadir paquete NuGet Markdown (p. ej. `WPF-UI.Markdown`).
+  - Integrar el control del visor Markdown para renderizar archivos `.md`.
+- [ ] **Apertura de Otros Archivos**:
+  - Para extensiones no contempladas directamente, lanzar la aplicación asociada con `Process.Start`.
+- [ ] **Gestión de Cierre y Sincronización**:
+  - Botón "Cancelar" con propiedad `IsCancel="True"` que cierre la ventana.
+  - Capturar evento `Closing` para asegurar que cerrar con <kbd>Alt</kbd> + <kbd>F4</kbd> o la `X` **no** cierre la aplicación completa, sino solo `DETAILWIN`.
+  - Consultar el tema (`EsModoNoche`) de su ventana `Owner` (`NAVEWIN`) para heredar los colores.
