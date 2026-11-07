@@ -25,6 +25,11 @@ namespace WpfApp1
 
         string ruta = string.Empty;
 
+        string[] rutas = new string[]
+        {
+            "","","",""
+        };
+
         public NAVEWIN()
         {
             // 1. Dibuja en pantalla los botones y cajas definidos en NAVEWIN.xaml
@@ -35,19 +40,16 @@ namespace WpfApp1
             nodoDesarrollo.Items.Add(new TreeViewItem
             {
                 Header = "Imagen 1",
-                Tag = ruta
+                Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\images.jpg"
 
             });
             nodoDesarrollo.Items.Add(new TreeViewItem { Header = "Imagen 2",
-                Tag = ruta
-            });
-            nodoDesarrollo.Items.Add(new TreeViewItem { Header = "Imagen 3",
-                Tag = ruta
+                Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\images2.jpg"
             });
 
             TreeViewItem nodoSistemas = new TreeViewItem { Header = "Txt" };
-            nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 1", Tag = ruta });
-            nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 2", Tag = ruta });
+            nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 1", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\hola.txt" });
+            nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 2", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\images2.jpg" });
 
             nodoRaiz.Items.Add(nodoDesarrollo);
             nodoRaiz.Items.Add(nodoSistemas);
@@ -65,7 +67,12 @@ namespace WpfApp1
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if(string.IsNullOrWhiteSpace(this.ruta))
+            if (treeView.SelectedItem is TreeViewItem nodoSeleccionado)
+            {
+                ruta = nodoSeleccionado.Tag?.ToString() ?? string.Empty;
+            }
+
+            /*if(string.IsNullOrWhiteSpace(this.ruta))
             {
                 // 2. Crea un cuadro de diálogo del sistema operativo para elegir un archivo
                 OpenFileDialog ofd = new OpenFileDialog();
@@ -81,7 +88,7 @@ namespace WpfApp1
                     ruta = ofd.FileName; // Guarda la ruta seleccionada (ej: "C:\Fotos\paisaje.jpg")
                     MessageBox.Show("Archivo seleccionado: " + ruta);
                 }
-            }
+            }*/
             // 4. Comprueba si el archivo existe en el disco duro
             if (File.Exists(this.ruta))
             {
@@ -130,7 +137,6 @@ namespace WpfApp1
             {
                 MessageBox.Show("El archivo no existe o la ruta no es válida.");
             }
-            this.ruta = "";
         }
     }
 }
