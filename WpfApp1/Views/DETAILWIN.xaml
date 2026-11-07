@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="DETAILWIN" Height="450" Width="800">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="400,188,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Ver Imagen" HorizontalAlignment="Left" Margin="679,319,0,0" VerticalAlignment="Top" Click="Button_Click"/>
 
     </Grid>
 </Window>
