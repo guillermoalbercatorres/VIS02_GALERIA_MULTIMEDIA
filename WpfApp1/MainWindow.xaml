@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Mostrar" HorizontalAlignment="Left" Margin="456,217,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.442,0.503" Width="76"/>
         <TextBox x:Name="textoBloque" TextWrapping="Wrap" AcceptsReturn="true" Text="TextBox" Margin="104,112,398,47" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
@@ -19,8 +18,6 @@
             </TextBox.RenderTransform>
         </TextBox>
         <Button Content="Añadir" HorizontalAlignment="Left" Margin="456,161,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click_1"/>
-        <TextBox x:Name="ModificarRuta" HorizontalAlignment="Left" Margin="321,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="259" Height="24"/>
-        <Button Content="Enviar" HorizontalAlignment="Left" Margin="638,41,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
 
     </Grid>
 </Window>

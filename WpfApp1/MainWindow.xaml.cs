@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Microsoft.Win32;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,16 +22,22 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-        }
+            OpenFileDialog ofd = new OpenFileDialog();
 
+            ofd.Title = "Selecciona un archivo de datos CSV";
+            ofd.Filter = "Todos los archivos (*.*)|*.*";
+            ofd.FilterIndex = 1;
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-        string ruta;
+            if (ofd.ShowDialog() == true)
+            {
+                ruta = ofd.FileName;
+                MessageBox.Show("Archivo seleccionado: " + ruta);
+            }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
             if (File.Exists(this.ruta))
             {
-                MessageBox.Show(this.ruta.Contains(".txt")+" , contiene .txt");
+                //MessageBox.Show(this.ruta.Contains(".txt") + " , contiene .txt");
 
                 if (this.ruta.Contains(".txt"))
                 {
@@ -50,27 +57,16 @@ namespace WpfApp1
             }
         }
 
+
+        string ruta;
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(this.ruta))
             using (StreamWriter sw = new StreamWriter(ruta, append: false))
             {
-                MessageBox.Show("Primero introduce una ruta.");
-                return;
+                sw.WriteLine(textoBloque.Text);
+
             }
-
-            File.WriteAllText(this.ruta, textoBloque.Text);
-
-            MessageBox.Show("Archivo guardado correctamente.");
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            // C:\\Users\\Guillermo\\Desktop\\hola.txt
-
-            this.ruta = ModificarRuta.Text.Trim();
-
-            MessageBox.Show("Ruta establecida: " + this.ruta);
         }
 
     }
