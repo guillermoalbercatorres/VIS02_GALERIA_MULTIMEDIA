@@ -1,26 +1,19 @@
 using Markdig;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WpfApp1
 {
     /// <summary>
-    /// Lógica de interacción para DETAILWIN.xaml
+    /// Ventana de Detalle (DETAILWIN): Muestra y procesa el archivo según su extensión.
     /// </summary>
     public partial class DETAILWIN : Window
     {
-        string ruta;
+        private string ruta = string.Empty;
 
         // Constructor por defecto
         public DETAILWIN()
@@ -28,47 +21,128 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        // Constructor que recibe la ruta que le envió NAVEWIN
-        public DETAILWIN(String ruta1) : this()
+        // Constructor que recibe la ruta inicial que le envía NAVEWIN
+        public DETAILWIN(string rutaInicial) : this()
         {
-            ruta = ruta1; // Guarda la ruta recibida
+            CargarArchivo(rutaInicial);
         }
+
+        /// <summary>
+        /// Carga automáticamente el archivo según su extensión real usando Path.GetExtension
+        /// en lugar de búsquedas de texto ambiguas (.Contains).
+        /// </summary>
+        public void CargarArchivo(string nuevaRuta)
+        {
+            if (string.IsNullOrWhiteSpace(nuevaRuta) || !File.Exists(nuevaRuta))
+                return;
+
+            this.ruta = nuevaRuta;
+            this.Title = $"DETAILWIN - {Path.GetFileName(nuevaRuta)}";
+
+            string ext = Path.GetExtension(nuevaRuta).ToLower();
+
+            try
+            {
+                switch (ext)
+                {
+                    case ".jpg":
+                    case ".jpeg":
+                    case ".png":
+                    case ".gif":
+                    case ".bmp":
+                    case ".webp":
+                        // Carga la imagen de forma nativa
+                        Imagen.Source = new BitmapImage(new Uri(nuevaRuta, UriKind.Absolute));
+                        break;
+
+                    case ".mp4":
+                    case ".mp3":
+                    case ".wav":
+                    case ".avi":
+                    case ".wmv":
+                    case ".mkv":
+                        // Carga y reproduce el elemento multimedia
+                        Video.Source = new Uri(nuevaRuta, UriKind.Absolute);
+                        Video.Play();
+                        break;
+
+                    case ".txt":
+                    case ".log":
+                    case ".csv":
+                    case ".json":
+                    case ".xml":
+                        // Lee el contenido completo del archivo de texto
+                        textoBloque.Text = File.ReadAllText(nuevaRuta);
+                        break;
+
+                    case ".md":
+                        // Renderizado de Markdown usando Markdig en WebBrowser
+                        string markdown = File.ReadAllText(nuevaRuta);
+                        var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+                        string contenidoHtml = Markdown.ToHtml(markdown, pipeline);
+                        string pagina = "<!doctype html><html><head><meta charset='utf-8'>" +
+                                        "<style>body{font-family:Segoe UI, Arial, sans-serif;margin:20px;line-height:1.5;color:#333;}</style>" +
+                                        "</head><body>" + contenidoHtml + "</body></html>";
+                        webBrowser1.NavigateToString(pagina);
+                        break;
+
+                    default:
+                        // Si es una extensión desconocida, abrir con la aplicación predeterminada del sistema
+                        ProcessStartInfo psi = new ProcessStartInfo
+                        {
+                            FileName = nuevaRuta,
+                            UseShellExecute = true
+                        };
+                        Process.Start(psi);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar el archivo:\n{ex.Message}", "Error al visualizar", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Evita que cerrar DETAILWIN (mediante la 'X' o Alt+F4) cierre toda la aplicación.
+        /// Oculta la ventana para que pueda volver a ser mostrada sin perder estado.
+        /// </summary>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+            base.OnClosing(e);
+        }
+
+        private void Button_Cerrar_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+
+        // ==========================================
+        // MÉTODOS DE SOPORTE PARA BOTONES MANUALES
+        // ==========================================
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // string ruta = @"C:\Users\Guillermo\Desktop\images.jpg";
-
-            // Al pulsar el botón, en lugar de mostrar la foto dentro de la ventana de WPF,
-            // le dice a Windows: "Abre este archivo con el programa que tengas predeterminado"
-
-            if(this.ruta.Contains(".jpg"))
+            if (EsExtensionImagen(this.ruta))
             {
-                Imagen.Source = new BitmapImage(
-                new Uri(this.ruta)
-            );
+                Imagen.Source = new BitmapImage(new Uri(this.ruta, UriKind.Absolute));
             }
-
-            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (this.ruta.Contains(".jpg"))
+            if (File.Exists(this.ruta))
             {
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = this.ruta,
-                    UseShellExecute = true,
-                };
-                Process.Start(psi);
+                Process.Start(new ProcessStartInfo { FileName = this.ruta, UseShellExecute = true });
             }
-            }
+        }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             if (File.Exists(this.ruta))
             {
-
                 Video.Source = new Uri(this.ruta, UriKind.Absolute);
                 Video.Play();
             }
@@ -76,59 +150,54 @@ namespace WpfApp1
 
         private void Button_Click_Texto(object sender, RoutedEventArgs e)
         {
-
-
-
-            if (this.ruta.Contains(".txt"))
+            if (Path.GetExtension(this.ruta).Equals(".txt", StringComparison.OrdinalIgnoreCase))
             {
-
-                using (StreamWriter sw = new StreamWriter(ruta, append: false))
+                using (StreamWriter sw = new StreamWriter(this.ruta, append: false))
                 {
-                    sw.WriteLine(textoBloque.Text); // Sobrescribe el archivo de texto con lo que haya en la caja
+                    sw.WriteLine(textoBloque.Text);
                 }
             }
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (this.ruta.Contains(".txt"))
+            if (File.Exists(this.ruta))
             {
-                string[] lineas = File.ReadAllLines(this.ruta);
-
-                textoBloque.Text = string.Join("\n", lineas);
-        }
+                textoBloque.Text = File.ReadAllText(this.ruta);
+            }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            if (this.ruta.Contains(".mp4"))
-            {
-                Video.Pause();
-            }
+            Video.Pause();
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            if (this.ruta.Contains(".mp4"))
+            if (File.Exists(this.ruta))
             {
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = this.ruta,
-                    UseShellExecute = true,
-                };
-                Process.Start(psi);
+                Process.Start(new ProcessStartInfo { FileName = this.ruta, UseShellExecute = true });
             }
-            }
+        }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            string markdown = File.ReadAllText(ruta);
-            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-            string contenidoHtml = Markdown.ToHtml(markdown, pipeline);
-            string pagina = "<!doctype html><html><head><meta charset='utf-8'>" +
-                "<style>body{font-family:Arial;margin:24px}</style>" +
-                "</head><body>" + contenidoHtml + "</body></html>";
-            webBrowser1.NavigateToString(pagina);
+            if (File.Exists(this.ruta))
+            {
+                string markdown = File.ReadAllText(this.ruta);
+                var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+                string contenidoHtml = Markdown.ToHtml(markdown, pipeline);
+                string pagina = "<!doctype html><html><head><meta charset='utf-8'>" +
+                                "<style>body{font-family:Segoe UI, Arial;margin:20px}</style>" +
+                                "</head><body>" + contenidoHtml + "</body></html>";
+                webBrowser1.NavigateToString(pagina);
+            }
+        }
+
+        private bool EsExtensionImagen(string rutaArchivo)
+        {
+            string ext = Path.GetExtension(rutaArchivo).ToLower();
+            return ext is ".jpg" or ".jpeg" or ".png" or ".gif" or ".bmp" or ".webp";
         }
     }
 }
