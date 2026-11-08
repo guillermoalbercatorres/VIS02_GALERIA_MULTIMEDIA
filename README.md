@@ -10,7 +10,7 @@ Este repositorio contiene la solución en WPF (.NET 10) para la práctica **VIS0
 VIS02/
 ├── .gitignore                      # Exclusiones de Git (bin, obj, .vs, pdfs, temporales)
 ├── enunciado.md                    # Requisitos detallados y especificaciones de la práctica
-├── README.md                       # Documentación de arquitectura y tareas pendientes
+├── README.md                       # Tareas estrictamente pendientes por implementar
 ├── WpfApp1.slnx                    # Archivo de solución de Visual Studio
 └── WpfApp1/                        # Proyecto WPF (.NET 10)
     ├── WpfApp1.csproj              # Archivo de proyecto (paquete Markdig)
@@ -34,27 +34,14 @@ VIS02/
 
 ---
 
-## 🧭 ¿Qué tenemos ya funcionando? (Resumen Ejecutivo)
-
-* **Compilación y dependencias:** Proyecto limpio en .NET 10 con NuGet `Markdig` integrado y 0 errores.
-* **Explorador en `NAVEWIN`:**
-  * Arranca automáticamente en la carpeta de imágenes del usuario (`Environment.SpecialFolder.MyPictures`).
-  * Árbol de carpetas fluido con carga bajo demanda (*Lazy Loading*) y gestión de excepciones.
-  * Selector nativo de carpetas (`OpenFolderDialog`) para cambiar de directorio en caliente.
-  * Control de ciclo de vida: `DETAILWIN` es ventana hija (`Owner = this`) y no se abren múltiples ventanas descontroladas.
-
----
-
-## 📋 Lista de Tareas PENDIENTES por Implementar
-
-*(Todas las tareas previas de configuración y base han sido completadas. Esta lista contiene exclusivamente el trabajo restante).*
+## 📋 Tareas Pendientes por Implementar
 
 ### 🟠 Prioridad 1: Rediseño Integral de la Ventana de Detalle (`DETAILWIN`)
 
 Actualmente `DETAILWIN` cuenta con controles de prueba superpuestos y botones con coordenadas absolutas que deben ser reemplazados por una interfaz limpia, responsiva y dinámica según el tipo de archivo:
 
 - [ ] **Limpieza de Controles y Layout Dinámico**:
-  - Eliminar todos los botones de prueba antiguos ("Ver imagen aquí", "Ver video sistema", etc.) con márgenes fijos.
+  - Eliminar todos los botones de prueba antiguos con márgenes fijos.
   - Implementar una estructura de paneles (`Grid` o paneles intercambiables) donde **solo sea visible el visor correspondiente al archivo cargado**, ocultando los demás:
     - Si es imagen $\rightarrow$ Mostrar únicamente panel de imagen y controles de zoom.
     - Si es multimedia $\rightarrow$ Mostrar únicamente reproductor y controles de reproducción.
@@ -67,10 +54,12 @@ Actualmente `DETAILWIN` cuenta con controles de prueba superpuestos y botones co
   - Botón de restablecer zoom / ajustar a ventana.
 - [ ] **Visor Multimedia (Audio / Vídeo) (Requisito Enunciado)**:
   - Barra de control multimedia con botones estilizados de **Play** y **Pause**.
-  - Opcional/Recomendado: Barra de progreso o control de volumen.
+  - Barra de progreso o control de volumen (opcional/recomendado).
 - [ ] **Visor de Texto Plano y Tipografía (Requisito Enunciado)**:
   - Botones o selector desplegable de **Fuente (FontFamily)** (ej. Consolas, Arial, Segoe UI, Courier New).
   - Botones de incremento y reducción de tamaño de letra (**FontSize +** / **FontSize -**).
+- [ ] **Visor Markdown (`Markdig`)**:
+  - Renderizado HTML estilizado e integrado en `WebBrowser` de manera fluida.
 - [ ] **Manejo de Archivos no Soportados**:
   - Si el usuario selecciona un archivo cuya extensión no es visualizable internamente (ej. `.pdf`, `.zip`, `.exe`), delegar la apertura directamente a Windows con `Process.Start` desde `NAVEWIN` sin dejar la ventana `DETAILWIN` abierta o en blanco.
 
@@ -95,12 +84,3 @@ El sistema de estilos debe dividirse estrictamente en tres niveles según el enu
 - [ ] **Lógica de Conmutación de Tema en Tiempo Real**:
   - Conectar el switch/checkbox `chkModoNoche` de `NAVEWIN` para alternar dinámicamente los recursos de `App.xaml` en caliente.
   - Sincronizar el tema en `DETAILWIN` consultando el estado de su ventana propietaria (`(Owner as NAVEWIN).EsModoNoche`).
-
----
-
-### 🟢 Prioridad 3: Pulido de Navegación e Integración Final
-
-- [ ] **Doble Clic en Explorador (`NAVEWIN`)**:
-  - Abrir el archivo con doble clic o tecla <kbd>Enter</kbd> además del cambio de selección.
-- [ ] **Feedback de Carga en Barra de Estado**:
-  - Mostrar en la barra inferior el tamaño del archivo seleccionado, fecha de modificación y dimensiones/extensión.
