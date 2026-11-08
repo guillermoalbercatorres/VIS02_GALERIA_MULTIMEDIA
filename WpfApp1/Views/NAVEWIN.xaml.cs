@@ -51,18 +51,20 @@ namespace WpfApp1
             nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 1", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\hola.txt" });
             nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 2", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\images2.jpg" });
 
+            TreeViewItem nodoVideos = new TreeViewItem { Header = "Videos" };
+            nodoVideos.Items.Add(new TreeViewItem { Header = "Video 1", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\7_967.mp4" });
+
+
+            
+
+            TreeViewItem nodoMark = new TreeViewItem { Header = "Markdown" };
+            nodoMark.Items.Add(new TreeViewItem { Header = "Mrk 1", Tag = "D:\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\documento.md" });
+
             nodoRaiz.Items.Add(nodoDesarrollo);
             nodoRaiz.Items.Add(nodoSistemas);
+            nodoRaiz.Items.Add(nodoVideos);
+            nodoRaiz.Items.Add(nodoMark);
             treeView.Items.Add(nodoRaiz);
-        }
-
-        // Al pulsar el botón "Añadir", sobrescribe el archivo de texto con lo que haya en la caja
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            using (StreamWriter sw = new StreamWriter(ruta, append: false))
-            {
-                sw.WriteLine(textoBloque.Text); // Sobrescribe el archivo de texto con lo que haya en la caja
-            }
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -97,45 +99,30 @@ namespace WpfApp1
                 // Si el nombre contiene ".txt", lee todas las líneas y las escribe en el TextBox
                 if (this.ruta.Contains(".txt"))
                 {
-                    string[] lineas = File.ReadAllLines(this.ruta);
-
-                    textoBloque.Text = string.Join("\n", lineas);
+                    DETAILWIN w1 = new DETAILWIN(this.ruta);
+                    w1.Show();
                 }
                 // Si el nombre contiene ".jpg", crea la segunda ventana (DETAILWIN) y le pasa la ruta
                 else if (this.ruta.Contains(".jpg"))
                 {
 
-                    DETAILWIN w1= null;
-                    bool abriendoVentana = false;
-                    if (w1 != null)
-                    {
-                        if (w1.IsVisible)
-                        {
-                            w1.Activate();
-                            return;
-                        }
-                    }
-
-                    if (!abriendoVentana)
-                    {
-                        abriendoVentana = true;
-
-                        w1 = new DETAILWIN(this.ruta);
-                        w1.Owner = this;
-
-                        w1.Closed += (s, args) =>
-                        {
-                            w1 = null;
-                            abriendoVentana = false;
-                        };
-
-                        w1.Show();
-                    }
+                    DETAILWIN w1 = new DETAILWIN(this.ruta);
+                    w1.Show();
+                }
+                else if (this.ruta.Contains(".mp4"))   
+                {
+                    DETAILWIN w1 = new DETAILWIN(this.ruta);
+                    w1.Show();
+                }
+                else if (this.ruta.Contains(".md"))
+                {
+                    DETAILWIN w1 = new DETAILWIN(this.ruta);
+                    w1.Show();
                 }
             }
             else
             {
-                MessageBox.Show("El archivo no existe o la ruta no es válida.");
+
             }
         }
     }

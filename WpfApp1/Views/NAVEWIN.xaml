@@ -7,17 +7,6 @@
         mc:Ignorable="d"
         Title="NAVEWIN" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="textoBloque" TextWrapping="Wrap" AcceptsReturn="true" Text="TextBox" Margin="306,16,196,143" RenderTransformOrigin="0.5,0.5">
-            <TextBox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="0.001"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBox.RenderTransform>
-        </TextBox>
-        <Button Content="Añadir" HorizontalAlignment="Left" Margin="608,155,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click_1"/>
         <TreeView x:Name="treeView" Margin="0,0,571,0" SelectedItemChanged="TreeView_SelectedItemChanged"/>
 
     </Grid>
