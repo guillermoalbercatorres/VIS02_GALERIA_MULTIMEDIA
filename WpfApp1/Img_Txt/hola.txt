@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 HOLA SEÑORA 
 ESTA UNA PRUEBA DE TEXTO
 JAJAJAJAJAJAJ
 SE RIO ROGER SE RIO AL VER EL ONE PIECE 
 JAJAJAJAJAJAJAJA
 Porque te ries guarra
+=======
+sssss
+Hola q tal estas
+>>>>>>> 48edd83c334c69e52d3a2899f13b000abeb7f52f

@@ -25,6 +25,11 @@ namespace WpfApp1
 
         string ruta = string.Empty;
 
+        string[] rutas = new string[]
+        {
+            "","","",""
+        };
+
         public NAVEWIN()
         {
             // 1. Dibuja en pantalla los botones y cajas definidos en NAVEWIN.xaml
@@ -45,6 +50,7 @@ namespace WpfApp1
             TreeViewItem nodoSistemas = new TreeViewItem { Header = "Txt" };
             nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 1", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\hola.txt" });
             nodoSistemas.Items.Add(new TreeViewItem { Header = "Txt 2", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\images2.jpg" });
+<<<<<<< HEAD
 
             TreeViewItem nodoVideos = new TreeViewItem { Header = "Videos" };
             nodoVideos.Items.Add(new TreeViewItem { Header = "Video 1", Tag = "C:\\Users\\Guillermo\\Desktop\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\7_967.mp4" });
@@ -55,6 +61,8 @@ namespace WpfApp1
             TreeViewItem nodoMark = new TreeViewItem { Header = "Markdown" };
             nodoMark.Items.Add(new TreeViewItem { Header = "Mrk 1", Tag = "D:\\VS_WINDOWS\\WpfApp1\\WpfApp1\\Img_Txt\\documento.md" });
 
+=======
+>>>>>>> 48edd83c334c69e52d3a2899f13b000abeb7f52f
 
             nodoRaiz.Items.Add(nodoDesarrollo);
             nodoRaiz.Items.Add(nodoSistemas);
