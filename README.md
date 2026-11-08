@@ -6,16 +6,14 @@ Este repositorio contiene la solución en WPF (.NET 10) para la práctica **VIS0
 
 ## 📁 Estructura del Proyecto
 
-El proyecto sigue una organización por responsabilidades separando vistas, recursos de diseño y configuración:
-
 ```text
 VIS02/
 ├── .gitignore                      # Exclusiones de Git (bin, obj, .vs, pdfs, temporales)
 ├── enunciado.md                    # Requisitos detallados y especificaciones de la práctica
-├── README.md                       # Documentación de arquitectura, estado y roadmap
+├── README.md                       # Documentación de arquitectura y tareas pendientes
 ├── WpfApp1.slnx                    # Archivo de solución de Visual Studio
 └── WpfApp1/                        # Proyecto WPF (.NET 10)
-    ├── WpfApp1.csproj              # Archivo de proyecto (referencias a paquetes NuGet como Markdig)
+    ├── WpfApp1.csproj              # Archivo de proyecto (paquete Markdig)
     ├── App.xaml                    # Recursos globales (Colores Modo Normal / Modo Noche)
     ├── App.xaml.cs                 # Lógica de ciclo de vida de la aplicación
     │
@@ -36,81 +34,73 @@ VIS02/
 
 ---
 
-## 📊 Estado Actual del Proyecto y Auditoría (Post-Merge `guille-rama`)
+## 🧭 ¿Qué tenemos ya funcionando? (Resumen Ejecutivo)
 
-Tras descargar los últimos cambios fusionados en `main`, se ha realizado una auditoría exhaustiva comparando con el `enunciado.md`:
-
-| Componente | Estado Real | Análisis / Problemas Detectados |
-| :--- | :---: | :--- |
-| **`WpfApp1.csproj`** | ⚠️ **Corregido** | Se subió a `main` con marcadores de conflicto de Git sin resolver (`<<<<<<< HEAD`), provocando error de compilación inmediato (`MSB4025`). |
-| **`NAVEWIN` (Explorador)** | 🔴 **Prototipo estático** | Tiene un `TreeView` con 4 elementos cableados a mano con rutas absolutas a carpetas personales (`C:\Users\Guillermo\...`). **No explora el sistema de archivos real**, no arranca en `MyPictures`, no tiene selector de carpeta ni multihilo. |
-| **`DETAILWIN` (Visor)** | 🟡 **Parcial / En bruto** | Contiene pruebas funcionales de `Image`, `MediaElement`, `TextBox` y `WebBrowser` (Markdig), pero colocados con márgenes fijos en un lienzo desordenado. Requiere pulsar botones manuales, no adapta la vista automáticamente, carece de zoom y de selección de fuentes/tamaño. |
-| **Estilos y Temas** | ⚪ **Pendiente (0%)** | `App.xaml` y los diccionarios en `Resources/` están vacíos. No existe conmutación ni paleta de Modo Noche/Normal. |
+* **Compilación y dependencias:** Proyecto limpio en .NET 10 con NuGet `Markdig` integrado y 0 errores.
+* **Explorador en `NAVEWIN`:**
+  * Arranca automáticamente en la carpeta de imágenes del usuario (`Environment.SpecialFolder.MyPictures`).
+  * Árbol de carpetas fluido con carga bajo demanda (*Lazy Loading*) y gestión de excepciones.
+  * Selector nativo de carpetas (`OpenFolderDialog`) para cambiar de directorio en caliente.
+  * Control de ciclo de vida: `DETAILWIN` es ventana hija (`Owner = this`) y no se abren múltiples ventanas descontroladas.
 
 ---
 
-## 🚦 Roadmap y Lista de Tareas Priorizadas
+## 📋 Lista de Tareas PENDIENTES por Implementar
 
-### 🔴 Prioridad 0: Correcciones Críticas y Portabilidad (Completado)
-- [x] **Reparar `WpfApp1.csproj`**: Marcadores de conflicto eliminados y paquete `Markdig` funcionando.
-- [x] **Eliminar rutas absolutas personales**: Sustituido el árbol estático con rutas personales por exploración real de disco y carga bajo demanda.
-- [x] **Sustituir `Contains(".ext")` por `Path.GetExtension()`**: Normalizada la detección de extensiones en `NAVEWIN` y `DETAILWIN`.
+*(Todas las tareas previas de configuración y base han sido completadas. Esta lista contiene exclusivamente el trabajo restante).*
 
----
+### 🟠 Prioridad 1: Rediseño Integral de la Ventana de Detalle (`DETAILWIN`)
 
-### 🟠 Prioridad 1: Requisitos Funcionales del Enunciado (Módulos Principales)
+Actualmente `DETAILWIN` cuenta con controles de prueba superpuestos y botones con coordenadas absolutas que deben ser reemplazados por una interfaz limpia, responsiva y dinámica según el tipo de archivo:
 
-#### Módulo 2: Ventana Principal (`NAVEWIN`)
-- [x] **Explorador real de carpetas con `TreeView`**:
-  - [x] Arranca por defecto en **"Mis imágenes"** (`Environment.SpecialFolder.MyPictures`).
-  - [x] Carga bajo demanda (Lazy Loading) de subdirectorios para rendimiento óptimo.
-  - [x] Iconos representativos según el tipo de archivo (🖼️, 🎬, 📄, 📝).
-- [x] **Selector de carpeta (Folder Picker)**:
-  - [x] Botón "📁 Cambiar Carpeta..." con diálogo nativo `OpenFolderDialog`.
-- [x] **Lanzamiento controlado de `DETAILWIN`**:
-  - [x] Apertura automática al seleccionar archivo en el árbol.
-  - [x] Reutilización de instancia única (`Owner = this`, sin duplicar ventanas).
-- [ ] **Selector Modo Noche / Modo Normal**:
-  - [x] CheckBox / Switch en la interfaz (`EsModoNoche`).
-  - [ ] Conectar con cambio de recursos y estilos dinámicos de `App.xaml`.
-
-#### Módulo 3: Ventana de Detalle (`DETAILWIN`)
-- [x] **Carga automática al recibir archivo**:
-  - [x] Carga y renderizado automático según extensión (`.jpg`, `.mp4`, `.txt`, `.md`).
-  - [x] Apertura con `Process.Start` para extensiones no reconocidas.
-- [x] **Cierre controlado y Gestión de Ciclo de Vida**:
-  - [x] Botón "✖ Cerrar Visor" con propiedad `IsCancel="True"` (soporta tecla <kbd>Esc</kbd>).
-  - [x] Evento `OnClosing` sobreescrito para ocultar la ventana (`e.Cancel = true; this.Hide();`) sin cerrar `NAVEWIN`.
-- [ ] **Visor de Imágenes**:
-  - [x] Carga nativa con `BitmapImage`.
-  - [ ] Controles funcionales de **Zoom In (+)** y **Zoom Out (-)** mediante `ScaleTransform`.
-- [ ] **Visor Multimedia (Audio / Vídeo)**:
-  - [x] `<MediaElement>` integrado con Play y Pause.
-  - [ ] Diseño y estilo unificado de controles multimedia.
-- [ ] **Visor de Texto Plano (`.txt`)**:
-  - [x] Carga de texto en `TextBox`.
-  - [ ] Controles para seleccionar **Fuente (FontFamily)** y cambiar tamaño (**FontSize +/-**).
-- [ ] **Adaptación visual limpia (Layout)**:
-  - [ ] Reemplazar posiciones absolutas por paneles responsivos que muestren sólo el visor activo.
+- [ ] **Limpieza de Controles y Layout Dinámico**:
+  - Eliminar todos los botones de prueba antiguos ("Ver imagen aquí", "Ver video sistema", etc.) con márgenes fijos.
+  - Implementar una estructura de paneles (`Grid` o paneles intercambiables) donde **solo sea visible el visor correspondiente al archivo cargado**, ocultando los demás:
+    - Si es imagen $\rightarrow$ Mostrar únicamente panel de imagen y controles de zoom.
+    - Si es multimedia $\rightarrow$ Mostrar únicamente reproductor y controles de reproducción.
+    - Si es texto plano $\rightarrow$ Mostrar únicamente editor de texto y controles de tipografía.
+    - Si es Markdown $\rightarrow$ Mostrar únicamente el visor web renderizado.
+- [ ] **Visor de Imágenes y Zoom (Requisito Enunciado)**:
+  - Contenedor con `ScrollViewer` o `Canvas` para permitir desplazamiento.
+  - Botón funcional de **Zoom In (+)** para aumentar la escala (`ScaleTransform`).
+  - Botón funcional de **Zoom Out (-)** para reducir la escala.
+  - Botón de restablecer zoom / ajustar a ventana.
+- [ ] **Visor Multimedia (Audio / Vídeo) (Requisito Enunciado)**:
+  - Barra de control multimedia con botones estilizados de **Play** y **Pause**.
+  - Opcional/Recomendado: Barra de progreso o control de volumen.
+- [ ] **Visor de Texto Plano y Tipografía (Requisito Enunciado)**:
+  - Botones o selector desplegable de **Fuente (FontFamily)** (ej. Consolas, Arial, Segoe UI, Courier New).
+  - Botones de incremento y reducción de tamaño de letra (**FontSize +** / **FontSize -**).
+- [ ] **Manejo de Archivos no Soportados**:
+  - Si el usuario selecciona un archivo cuya extensión no es visualizable internamente (ej. `.pdf`, `.zip`, `.exe`), delegar la apertura directamente a Windows con `Process.Start` desde `NAVEWIN` sin dejar la ventana `DETAILWIN` abierta o en blanco.
 
 ---
 
 ### 🟡 Prioridad 2: Sistema de Estilos y Recursos (Módulo 1)
-- [ ] **Paleta de Colores en `App.xaml`**:
-  - Definir `SolidColorBrush` para Modo Normal (`FondoBrush` claro, `TextoBrush` oscuro).
-  - Definir `SolidColorBrush` para Modo Noche (`FondoBrush` oscuro, `TextoBrush` claro).
-  - Estilos base para `Grid`, `TextBox` y `Label` con `DynamicResource`.
-- [ ] **Estilos a nivel de Ventana (`Window.Resources`)**:
-  - Estilos de botones específicos para `NAVEWIN.xaml`.
-  - Estilos de botones específicos para `DETAILWIN.xaml`.
-- [ ] **Completar Diccionarios de Recursos (`Resources/`)**:
-  - `ImageStyles.xaml`: Estilos para botones de Zoom.
-  - `MediaStyles.xaml`: Estilos para controles Play/Pause.
-  - `TextStyles.xaml`: Estilos para controles de tipografía.
-  - `MarkdownStyles.xaml`: Estilos para la presentación de Markdown.
+
+El sistema de estilos debe dividirse estrictamente en tres niveles según el enunciado:
+
+- [ ] **Nivel 1: Recursos Globales de Aplicación (`App.xaml`)**:
+  - Definir la paleta para **Modo Normal (Claro)**: `FondoBrush`, `TextoBrush`, `BordeBrush`.
+  - Definir la paleta para **Modo Noche (Oscuro)**: `FondoBrush`, `TextoBrush`, `BordeBrush`.
+  - Crear estilos implícitos o dinámicos (`DynamicResource`) para `Grid`, `TextBox`, `Label` y `Button`.
+- [ ] **Nivel 2: Recursos de Ventana (`Window.Resources`)**:
+  - Definir en `NAVEWIN.xaml` estilos propios para sus botones (selector de carpetas, opciones).
+  - Definir en `DETAILWIN.xaml` estilos propios para sus botones de acción (zoom, play/pause, fuentes).
+- [ ] **Nivel 3: Diccionarios de Recursos Independientes (`Resources/`)**:
+  - `ImageStyles.xaml`: Estilos específicos para los botones de Zoom.
+  - `MediaStyles.xaml`: Estilos específicos para los controles de reproducción.
+  - `TextStyles.xaml`: Estilos específicos para las herramientas de texto y tamaño.
+  - `MarkdownStyles.xaml`: Estilos visuales del visor Markdown.
+- [ ] **Lógica de Conmutación de Tema en Tiempo Real**:
+  - Conectar el switch/checkbox `chkModoNoche` de `NAVEWIN` para alternar dinámicamente los recursos de `App.xaml` en caliente.
+  - Sincronizar el tema en `DETAILWIN` consultando el estado de su ventana propietaria (`(Owner as NAVEWIN).EsModoNoche`).
 
 ---
 
-### 🟢 Prioridad 3: Diseño, Limpieza y Buenas Prácticas
-- [ ] **Layout responsivo en `DETAILWIN`**: Sustituir el diseño de botones con márgenes fijos (`Margin="824,255,0,0"`) por una cuadrícula limpia (`Grid.RowDefinitions` / `StackPanel`).
-- [ ] **Sincronización de tema**: Que `DETAILWIN` herede automáticamente el tema activo consultando a su ventana `Owner`.
+### 🟢 Prioridad 3: Pulido de Navegación e Integración Final
+
+- [ ] **Doble Clic en Explorador (`NAVEWIN`)**:
+  - Abrir el archivo con doble clic o tecla <kbd>Enter</kbd> además del cambio de selección.
+- [ ] **Feedback de Carga en Barra de Estado**:
+  - Mostrar en la barra inferior el tamaño del archivo seleccionado, fecha de modificación y dimensiones/extensión.
