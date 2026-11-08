@@ -40,7 +40,11 @@
             </Grid.ColumnDefinitions>
 
             <!-- Explorador de Archivos TreeView -->
-            <TreeView Grid.Column="0" x:Name="treeView" SelectedItemChanged="TreeView_SelectedItemChanged" BorderBrush="#DDDDDD" BorderThickness="1"/>
+            <TreeView Grid.Column="0" x:Name="treeView" 
+                      SelectedItemChanged="TreeView_SelectedItemChanged" 
+                      MouseDoubleClick="TreeView_MouseDoubleClick"
+                      KeyDown="TreeView_KeyDown"
+                      BorderBrush="#DDDDDD" BorderThickness="1"/>
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="#EAEAEA" Cursor="SizeWE"/>
 

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace WpfApp1
 {
@@ -152,8 +153,8 @@ namespace WpfApp1
         }
 
         /// <summary>
-        /// Evento al seleccionar un elemento en el árbol.
-        /// Si es un archivo, actualiza o abre la ventana de detalle (DETAILWIN).
+        /// Evento al seleccionar un elemento en el árbol con un simple clic.
+        /// Muestra la información del elemento seleccionado sin abrir la ventana de detalle automáticamente.
         /// </summary>
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -164,10 +165,7 @@ namespace WpfApp1
                     rutaSeleccionada = ruta;
                     txtInfoSeleccion.Text = $"Archivo seleccionado:\n{Path.GetFileName(ruta)}\n\nRuta:\n{ruta}";
                     btnAbrirVisor.IsEnabled = true;
-                    lblEstado.Text = $"Archivo: {Path.GetFileName(ruta)}";
-
-                    // Abre o actualiza automáticamente el visor en DETAILWIN
-                    AbrirOActualizarVisor(ruta);
+                    lblEstado.Text = $"Seleccionado: {Path.GetFileName(ruta)} (Doble clic, Enter o botón para abrir)";
                 }
                 else if (Directory.Exists(ruta))
                 {
@@ -175,6 +173,33 @@ namespace WpfApp1
                     txtInfoSeleccion.Text = $"Carpeta seleccionada:\n{Path.GetFileName(ruta)}\n\n(Despliégala en el árbol para ver su contenido)";
                     btnAbrirVisor.IsEnabled = false;
                     lblEstado.Text = $"Carpeta: {ruta}";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Abre el visor al hacer doble clic sobre un archivo en el árbol.
+        /// </summary>
+        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (treeView.SelectedItem is TreeViewItem nodo && nodo.Tag is string ruta && File.Exists(ruta))
+            {
+                AbrirOActualizarVisor(ruta);
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Abre el visor si el usuario pulsa Enter sobre un archivo seleccionado.
+        /// </summary>
+        private void TreeView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (treeView.SelectedItem is TreeViewItem nodo && nodo.Tag is string ruta && File.Exists(ruta))
+                {
+                    AbrirOActualizarVisor(ruta);
+                    e.Handled = true;
                 }
             }
         }
