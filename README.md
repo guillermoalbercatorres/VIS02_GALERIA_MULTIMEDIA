@@ -23,13 +23,11 @@ VIS02/
     │   ├── DETAILWIN.xaml          # Ventana de Detalle dinámica según tipo de archivo
     │   └── DETAILWIN.xaml.cs       # Lógica de visualización (Zoom, Audio/Vídeo, Texto, Markdown)
     │
-    ├── Resources/                  # Diccionarios de Recursos independientes (XAML)
-    │   ├── ImageStyles.xaml        # Estilos para visor de imágenes y controles de Zoom
-    │   ├── MediaStyles.xaml        # Estilos para reproductor multimedia (Play/Pause)
-    │   ├── TextStyles.xaml         # Estilos para visualización de texto (Font y FontSize)
-    │   └── MarkdownStyles.xaml     # Estilos para visor Markdown (.md)
-    │
-    └── Img_Txt/                    # Archivos de prueba locales (imágenes, textos, markdown)
+    └── Resources/                  # Diccionarios de Recursos independientes (XAML)
+        ├── ImageStyles.xaml        # Estilos para visor de imágenes y controles de Zoom
+        ├── MediaStyles.xaml        # Estilos para reproductor multimedia (Play/Pause)
+        ├── TextStyles.xaml         # Estilos para visualización de texto (Font y FontSize)
+        └── MarkdownStyles.xaml     # Estilos para visor Markdown (.md)
 ```
 
 ---
