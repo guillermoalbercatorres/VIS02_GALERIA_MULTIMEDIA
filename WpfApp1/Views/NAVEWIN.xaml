@@ -5,9 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="NAVEWIN" Height="450" Width="800">
-    <Grid>
-        <TreeView x:Name="treeView" Margin="0,0,571,0" SelectedItemChanged="TreeView_SelectedItemChanged"/>
+        Title="NAVEWIN - Explorador de Archivos Multimedia" Height="620" Width="920"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <!-- Barra Superior: Ruta actual y selector de carpeta -->
+        <Border Grid.Row="0" Background="#F4F4F6" BorderBrush="#E0E0E0" BorderThickness="1" Padding="10" CornerRadius="6" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Ruta actual:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                <TextBox Grid.Column="1" x:Name="txtRutaActual" IsReadOnly="True" VerticalAlignment="Center" Padding="5,4" Background="White" BorderBrush="#CCCCCC"/>
+                <Button Grid.Column="2" x:Name="btnCambiarCarpeta" Content="📁 Cambiar Carpeta..." Margin="10,0,10,0" Padding="12,5" Click="BtnCambiarCarpeta_Click" Cursor="Hand"/>
+                <CheckBox Grid.Column="3" x:Name="chkModoNoche" Content="🌙 Modo Noche" VerticalAlignment="Center" Checked="ChkModoNoche_Checked" Unchecked="ChkModoNoche_Unchecked" Cursor="Hand"/>
+            </Grid>
+        </Border>
+
+        <!-- Área Principal: Árbol de archivos y panel de información -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="340" MinWidth="220"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Explorador de Archivos TreeView -->
+            <TreeView Grid.Column="0" x:Name="treeView" SelectedItemChanged="TreeView_SelectedItemChanged" BorderBrush="#DDDDDD" BorderThickness="1"/>
+
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="#EAEAEA" Cursor="SizeWE"/>
+
+            <!-- Panel Derecho: Información y control de apertura -->
+            <Border Grid.Column="2" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Margin="5,0,0,0" Padding="20">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="🖼️ Visor Multimedia" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,12" Foreground="#333333"/>
+                        <TextBlock x:Name="txtInfoSeleccion" Text="Selecciona un archivo del árbol para abrirlo en la ventana de detalle (DETAILWIN)." TextWrapping="Wrap" TextAlignment="Center" MaxWidth="380" Foreground="#666666" Margin="0,0,0,20"/>
+                        <Button x:Name="btnAbrirVisor" Content="🔍 Abrir en DETAILWIN" Padding="14,8" FontWeight="SemiBold" HorizontalAlignment="Center" Click="BtnAbrirVisor_Click" IsEnabled="False" Cursor="Hand"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Barra de Estado Inferior -->
+        <StatusBar Grid.Row="2" Margin="0,8,0,0" Background="#F4F4F6">
+            <StatusBarItem>
+                <TextBlock x:Name="lblEstado" Text="Listo" Foreground="#555555"/>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="DETAILWIN" Height="824" Width="1461">
+        Title="DETAILWIN - Visor de Archivo" Height="824" Width="1461"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBox x:Name="textoBloque" TextWrapping="Wrap" AcceptsReturn="true" Text="TextBox" Margin="2,4,1092,1" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
@@ -34,5 +35,7 @@
         <WebBrowser x:Name="webBrowser1" Margin="946,425,10,0"/>
         <Button Content="Markdawn" HorizontalAlignment="Left" Margin="1178,181,0,0" VerticalAlignment="Top" Click="Button_Click_6"/>
 
+        <!-- Botón de Cierre / Cancelación con IsCancel="True" según el enunciado -->
+        <Button Content="✖ Cerrar Visor" IsCancel="True" HorizontalAlignment="Right" Margin="0,12,24,0" VerticalAlignment="Top" Padding="14,6" FontWeight="SemiBold" Cursor="Hand" Click="Button_Cerrar_Click"/>
     </Grid>
 </Window>

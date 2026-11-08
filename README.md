@@ -51,44 +51,47 @@ Tras descargar los últimos cambios fusionados en `main`, se ha realizado una au
 
 ## 🚦 Roadmap y Lista de Tareas Priorizadas
 
-### 🔴 Prioridad 0: Correcciones Críticas y Portabilidad (Inmediato)
-- [x] **Reparar `WpfApp1.csproj`**: Eliminar marcadores residuales de conflicto de Git y asegurar compilación limpia con el paquete `Markdig`.
-- [ ] **Eliminar rutas absolutas personales**: Reemplazar cualquier ruta fija como `C:\Users\Guillermo\...` por rutas relativas al proyecto (`AppDomain.CurrentDomain.BaseDirectory` o carpeta `Img_Txt/`) para que funcione en cualquier ordenador.
-- [ ] **Sustituir `Contains(".ext")` por `Path.GetExtension()`**: Prevenir falsos positivos al detectar extensiones de archivo (ej. `archivo.jpg.txt`).
+### 🔴 Prioridad 0: Correcciones Críticas y Portabilidad (Completado)
+- [x] **Reparar `WpfApp1.csproj`**: Marcadores de conflicto eliminados y paquete `Markdig` funcionando.
+- [x] **Eliminar rutas absolutas personales**: Sustituido el árbol estático con rutas personales por exploración real de disco y carga bajo demanda.
+- [x] **Sustituir `Contains(".ext")` por `Path.GetExtension()`**: Normalizada la detección de extensiones en `NAVEWIN` y `DETAILWIN`.
 
 ---
 
 ### 🟠 Prioridad 1: Requisitos Funcionales del Enunciado (Módulos Principales)
 
 #### Módulo 2: Ventana Principal (`NAVEWIN`)
-- [ ] **Explorador real de carpetas con `TreeView`**:
-  - Cargar por defecto la ruta del sistema **"Mis imágenes"** (`Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)`).
-  - Carga asíncrona / multihilo de directorios y archivos para evitar congelar la interfaz.
-  - Iconos o diferenciación visual entre carpetas y archivos.
-- [ ] **Selector de carpeta (Folder Picker)**:
-  - Botón para abrir diálogo de selección de carpeta (`OpenFolderDialog` o `FolderBrowserDialog`) para cambiar el directorio raíz explorado.
-- [ ] **Lanzamiento controlado de `DETAILWIN`**:
-  - Al hacer clic en un archivo del árbol, abrir o actualizar `DETAILWIN` asignándole `Owner = this`.
-  - Evitar instanciar múltiples ventanas descontroladas si ya hay una abierta.
+- [x] **Explorador real de carpetas con `TreeView`**:
+  - [x] Arranca por defecto en **"Mis imágenes"** (`Environment.SpecialFolder.MyPictures`).
+  - [x] Carga bajo demanda (Lazy Loading) de subdirectorios para rendimiento óptimo.
+  - [x] Iconos representativos según el tipo de archivo (🖼️, 🎬, 📄, 📝).
+- [x] **Selector de carpeta (Folder Picker)**:
+  - [x] Botón "📁 Cambiar Carpeta..." con diálogo nativo `OpenFolderDialog`.
+- [x] **Lanzamiento controlado de `DETAILWIN`**:
+  - [x] Apertura automática al seleccionar archivo en el árbol.
+  - [x] Reutilización de instancia única (`Owner = this`, sin duplicar ventanas).
 - [ ] **Selector Modo Noche / Modo Normal**:
-  - Control en la ventana para cambiar entre temas y notificar a la ventana de detalle.
+  - [x] CheckBox / Switch en la interfaz (`EsModoNoche`).
+  - [ ] Conectar con cambio de recursos y estilos dinámicos de `App.xaml`.
 
 #### Módulo 3: Ventana de Detalle (`DETAILWIN`)
-- [ ] **Adaptación dinámica de la interfaz**:
-  - Al abrirse con una ruta, ocultar los controles innecesarios y mostrar únicamente el visor correspondiente al tipo de archivo (en lugar de tener botones manuales dispersos).
+- [x] **Carga automática al recibir archivo**:
+  - [x] Carga y renderizado automático según extensión (`.jpg`, `.mp4`, `.txt`, `.md`).
+  - [x] Apertura con `Process.Start` para extensiones no reconocidas.
+- [x] **Cierre controlado y Gestión de Ciclo de Vida**:
+  - [x] Botón "✖ Cerrar Visor" con propiedad `IsCancel="True"` (soporta tecla <kbd>Esc</kbd>).
+  - [x] Evento `OnClosing` sobreescrito para ocultar la ventana (`e.Cancel = true; this.Hide();`) sin cerrar `NAVEWIN`.
 - [ ] **Visor de Imágenes**:
-  - Componente `<Image>` con controles funcionales de **Zoom In (+)** y **Zoom Out (-)** mediante `ScaleTransform` o ajuste de dimensiones.
+  - [x] Carga nativa con `BitmapImage`.
+  - [ ] Controles funcionales de **Zoom In (+)** y **Zoom Out (-)** mediante `ScaleTransform`.
 - [ ] **Visor Multimedia (Audio / Vídeo)**:
-  - `<MediaElement>` integrado con controles claros de **Play** y **Pause**.
+  - [x] `<MediaElement>` integrado con Play y Pause.
+  - [ ] Diseño y estilo unificado de controles multimedia.
 - [ ] **Visor de Texto Plano (`.txt`)**:
-  - Vista previa en `TextBox` con controles funcionales para seleccionar **Fuente (FontFamily)** y cambiar tamaño de letra (**FontSize +/-**).
-- [ ] **Visor Markdown (`.md`)**:
-  - Renderizado automático del contenido Markdown enriquecido al cargar el archivo.
-- [ ] **Fallback para otros archivos**:
-  - Si la extensión no es soportada internamente, ejecutar automáticamente `Process.Start` con la aplicación predeterminada del sistema.
-- [ ] **Cierre controlado y Gestión de Ciclo de Vida**:
-  - Botón "Cerrar" / "Cancelar" con propiedad `IsCancel="True"`.
-  - Capturar evento `Closing` para que cerrar `DETAILWIN` (`X` o <kbd>Alt</kbd>+<kbd>F4</kbd>) no cierre toda la aplicación, sino que use `e.Cancel = true; this.Hide();` o cierre solo dicha ventana.
+  - [x] Carga de texto en `TextBox`.
+  - [ ] Controles para seleccionar **Fuente (FontFamily)** y cambiar tamaño (**FontSize +/-**).
+- [ ] **Adaptación visual limpia (Layout)**:
+  - [ ] Reemplazar posiciones absolutas por paneles responsivos que muestren sólo el visor activo.
 
 ---
 
