@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace WpfApp1
 {
@@ -264,12 +265,39 @@ namespace WpfApp1
         private void ChkModoNoche_Checked(object sender, RoutedEventArgs e)
         {
             EsModoNoche = true;
-            // Listo para conmutar paleta de estilos globales
+
+            // Reasignar los recursos definidos en App.xaml para el Modo Noche
+
+            // Fondo principal
+            Application.Current.Resources["AppBackgroundBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#18181B"));
+            // Texto principal
+            Application.Current.Resources["AppForegroundBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4F4F5"));
+            // Fondo de controles (TextBox)
+            Application.Current.Resources["ControlBackgroundBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#27272A"));
+            // Bordes de controles
+            Application.Current.Resources["ControlBorderBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3F3F46"));
+            // Fondo específico para botones
+            Application.Current.Resources["ButtonBackgroundBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3F3F46"));
         }
+
 
         private void ChkModoNoche_Unchecked(object sender, RoutedEventArgs e)
         {
             EsModoNoche = false;
+
+            // Reasignar los colores originales definidos en App.xaml para el Modo Día
+            // Usamos ColorConverter para transformar el string hexadecimal en un Color
+            Application.Current.Resources["AppBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF0F2F5"));
+            Application.Current.Resources["AppForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF1C1E21"));
+            Application.Current.Resources["ControlBackgroundBrush"] = new SolidColorBrush(Colors.White);
+            Application.Current.Resources["ControlBorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCED4DA"));
+            Application.Current.Resources["ButtonBackgroundBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E4E4E7"));
         }
     }
 }

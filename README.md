@@ -67,7 +67,7 @@ Actualmente `DETAILWIN` cuenta con controles de prueba superpuestos y botones co
 
 El sistema de estilos debe dividirse estrictamente en tres niveles según el enunciado:
 
-- [ ] **Nivel 1: Recursos Globales de Aplicación (`App.xaml`)**:
+- [x] **Nivel 1: Recursos Globales de Aplicación (`App.xaml`)**:
   - Definir la paleta para **Modo Normal (Claro)**: `FondoBrush`, `TextoBrush`, `BordeBrush`.
   - Definir la paleta para **Modo Noche (Oscuro)**: `FondoBrush`, `TextoBrush`, `BordeBrush`.
   - Crear estilos implícitos o dinámicos (`DynamicResource`) para `Grid`, `TextBox`, `Label` y `Button`.
@@ -80,5 +80,5 @@ El sistema de estilos debe dividirse estrictamente en tres niveles según el enu
   - `TextStyles.xaml`: Estilos específicos para las herramientas de texto y tamaño.
   - `MarkdownStyles.xaml`: Estilos visuales del visor Markdown.
 - [ ] **Lógica de Conmutación de Tema en Tiempo Real**:
-  - Conectar el switch/checkbox `chkModoNoche` de `NAVEWIN` para alternar dinámicamente los recursos de `App.xaml` en caliente.
-  - Sincronizar el tema en `DETAILWIN` consultando el estado de su ventana propietaria (`(Owner as NAVEWIN).EsModoNoche`).
+  - [x] Conectar el switch/checkbox `chkModoNoche` de `NAVEWIN` para alternar dinámicamente los recursos de `App.xaml` en caliente.
+  - [ ] Sincronizar el tema en `DETAILWIN` consultando el estado de su ventana propietaria (`(Owner as NAVEWIN).EsModoNoche`).
