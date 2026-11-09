@@ -4,6 +4,114 @@
              xmlns:local="clr-namespace:WpfApp1"
              StartupUri="Views/NAVEWIN.xaml">
     <Application.Resources>
-         
+
+        <!-- Cambios - Raúl-->
+        <!-- ========================================================= -->
+        <!-- 1. PALETA DE COLORES BASE (Inicia en MODO NORMAL/DÍA)     -->
+        <!-- Nota: Al usar DynamicResource, estos valores podrán       -->
+        <!-- sobreescribirse desde C# para activar el Modo Noche       -->
+        <!-- ========================================================= -->
+
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FFF0F2F5"/>
+        <!-- Gris muy claro para el fondo -->
+        <SolidColorBrush x:Key="AppForegroundBrush" Color="#FF1C1E21"/>
+        <!-- Casi negro para el texto -->
+
+        <SolidColorBrush x:Key="ControlBackgroundBrush" Color="White"/>
+        <SolidColorBrush x:Key="ControlBorderBrush" Color="#FFCED4DA"/>
+
+        <!-- ========================================================= -->
+        <!-- 2. ESTILOS IMPLÍCITOS (Sin x:Key)                         -->
+        <!-- Se aplicarán automáticamente a todos estos controles en   -->
+        <!-- toda la aplicación sin tener que llamarlos uno a uno.     -->
+        <!-- ========================================================= -->
+
+        <!-- Estilo Global para GRID -->
+        <Style TargetType="Grid">
+            <!-- El Grid suele actuar como contenedor principal, le damos el color de fondo general -->
+            <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}" />
+        </Style>
+
+        <!-- Estilo Global para LABEL -->
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="{DynamicResource AppForegroundBrush}" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <!-- Estilo Global para TEXTBOX -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource AppForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="6,4" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="14" />
+            <!-- Añadimos un pequeño redondeo para un toque de diseño más moderno -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo Global para TEXTBLOCK -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource AppForegroundBrush}" />
+        </Style>
+
+        <!-- Estilo Global para CHECKBOX -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource AppForegroundBrush}" />
+        </Style>
+
+        <!-- Estilo Global Avanzado para BUTTON -->
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource AppForegroundBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12,6" />
+            <!-- Sobrescribimos la plantilla visual del botón -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!-- Diseño base del botón con bordes redondeados -->
+                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" 
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+
+                        <!-- Disparadores (Triggers) de estado -->
+                        <ControlTemplate.Triggers>
+                            <!-- 1. Cuando está deshabilitado: Mantenemos colores pero bajamos la opacidad -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4" />
+                            </Trigger>
+
+                            <!-- 2. Efecto hover al pasar el ratón -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
+    
 </Application>

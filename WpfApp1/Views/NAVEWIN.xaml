@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="NAVEWIN - Explorador de Archivos Multimedia" Height="620" Width="920"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBackgroundBrush}">
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <!-- Barra Superior: Ruta actual y selector de carpeta -->
-        <Border Grid.Row="0" Background="#F4F4F6" BorderBrush="#E0E0E0" BorderThickness="1" Padding="10" CornerRadius="6" Margin="0,0,0,10">
+        <Border Grid.Row="0" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" Padding="10" CornerRadius="6" Margin="0,0,0,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -25,7 +26,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Ruta actual:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
-                <TextBox Grid.Column="1" x:Name="txtRutaActual" IsReadOnly="True" VerticalAlignment="Center" Padding="5,4" Background="White" BorderBrush="#CCCCCC"/>
+                <TextBox Grid.Column="1" x:Name="txtRutaActual" IsReadOnly="True" VerticalAlignment="Center" Padding="5,4" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource ControlBorderBrush}"/>
                 <Button Grid.Column="2" x:Name="btnCambiarCarpeta" Content="📁 Cambiar Carpeta..." Margin="10,0,10,0" Padding="12,5" Click="BtnCambiarCarpeta_Click" Cursor="Hand"/>
                 <CheckBox Grid.Column="3" x:Name="chkModoNoche" Content="🌙 Modo Noche" VerticalAlignment="Center" Checked="ChkModoNoche_Checked" Unchecked="ChkModoNoche_Unchecked" Cursor="Hand"/>
             </Grid>
@@ -44,16 +45,16 @@
                       SelectedItemChanged="TreeView_SelectedItemChanged" 
                       MouseDoubleClick="TreeView_MouseDoubleClick"
                       KeyDown="TreeView_KeyDown"
-                      BorderBrush="#DDDDDD" BorderThickness="1"/>
+                       BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1"/>
 
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="#EAEAEA" Cursor="SizeWE"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" Cursor="SizeWE"/>
 
             <!-- Panel Derecho: Información y control de apertura -->
-            <Border Grid.Column="2" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Margin="5,0,0,0" Padding="20">
+            <Border Grid.Column="2" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" CornerRadius="6" Margin="5,0,0,0" Padding="20">
                 <Grid>
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="🖼️ Visor Multimedia" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,12" Foreground="#333333"/>
-                        <TextBlock x:Name="txtInfoSeleccion" Text="Selecciona un archivo del árbol para abrirlo en la ventana de detalle (DETAILWIN)." TextWrapping="Wrap" TextAlignment="Center" MaxWidth="380" Foreground="#666666" Margin="0,0,0,20"/>
+                        <TextBlock Text="🖼️ Visor Multimedia" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock x:Name="txtInfoSeleccion" Text="Selecciona un archivo del árbol para abrirlo en la ventana de detalle (DETAILWIN)." TextWrapping="Wrap" TextAlignment="Center" MaxWidth="380" Margin="0,0,0,20"/>
                         <Button x:Name="btnAbrirVisor" Content="🔍 Abrir en DETAILWIN" Padding="14,8" FontWeight="SemiBold" HorizontalAlignment="Center" Click="BtnAbrirVisor_Click" IsEnabled="False" Cursor="Hand"/>
                     </StackPanel>
                 </Grid>
@@ -61,9 +62,9 @@
         </Grid>
 
         <!-- Barra de Estado Inferior -->
-        <StatusBar Grid.Row="2" Margin="0,8,0,0" Background="#F4F4F6">
+        <StatusBar Grid.Row="2" Margin="0,8,0,0" Background="{DynamicResource ControlBackgroundBrush}">
             <StatusBarItem>
-                <TextBlock x:Name="lblEstado" Text="Listo" Foreground="#555555"/>
+                <TextBlock x:Name="lblEstado" Text="Listo"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>
