@@ -5,36 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="DETAILWIN - Visor de Archivo" Height="824" Width="1461"
+        Title="DETAILWIN - Visor de Archivo" Height="608" Width="1281"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource AppBackgroundBrush}">
     <Grid>
-        <TextBox x:Name="textoBloque" TextWrapping="Wrap" AcceptsReturn="true" Text="TextBox" Margin="2,4,1092,1" RenderTransformOrigin="0.5,0.5">
+        <TextBox x:Name="textoBloque" TextWrapping="Wrap" AcceptsReturn="true" Text="AQUI VAS A PODER PONER TU TEXTO DE MD O TXT&#xD;&#xA;" RenderTransformOrigin="0.067,0.463" Margin="0,0,1104,0">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform Angle="0.001"/>
-                    <TranslateTransform/>
+                    <TranslateTransform Y="-0.009"/>
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Button Content="Añadir al archivo txt" HorizontalAlignment="Left" Margin="824,255,0,0" VerticalAlignment="Top" Width="135" Click="Button_Click_Texto" RenderTransformOrigin="0.32,0.653"/>
-        <Button Content="Ver Imagen aqui" HorizontalAlignment="Left" Margin="846,369,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Añadir al archivo txt" HorizontalAlignment="Left" Margin="797,84,0,0" VerticalAlignment="Top" Width="135" Click="Button_Click_Texto" RenderTransformOrigin="0.32,0.653"/>
+        <Button Content="Ver Imagen aqui" HorizontalAlignment="Left" Margin="622,176,0,0" VerticalAlignment="Top" Click="Button_Click"/>
 
         <MediaElement x:Name="Video"
               LoadedBehavior="Manual"
               UnloadedBehavior="Stop"
-              Stretch="Uniform" Margin="395,491,683,13"/>
+              Stretch="Uniform" Margin="198,349,635,-12"/>
 
-        <Image x:Name="Imagen" HorizontalAlignment="Left" Height="343" Margin="372,10,0,0" VerticalAlignment="Top" Width="397"/>
-        <Button Content="Ver imagen sistema" HorizontalAlignment="Left" Margin="838,317,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <Button Content="Ver video aqui" HorizontalAlignment="Left" Margin="851,161,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-        <Button Content="Poner texto" HorizontalAlignment="Left" Margin="866,216,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
-        <Button Content="Pausar Video" HorizontalAlignment="Left" Margin="872,107,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
-        <Button Content="Ver video sistema" HorizontalAlignment="Left" Margin="860,57,0,0" VerticalAlignment="Top" Click="Button_Click_5"/>
-        <WebBrowser x:Name="webBrowser1" Margin="946,425,10,0"/>
-        <Button Content="Markdawn" HorizontalAlignment="Left" Margin="1178,181,0,0" VerticalAlignment="Top" Click="Button_Click_6"/>
+        <Image x:Name="Imagen" HorizontalAlignment="Left" Height="343" Margin="192,10,0,0" VerticalAlignment="Top" Width="409"/>
+        <Button Content="Ver imagen sistema" HorizontalAlignment="Left" Margin="979,84,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button Content="Ver video aqui" HorizontalAlignment="Left" Margin="979,12,0,0" VerticalAlignment="Top" Click="Button_Click_2" Width="129"/>
+        <Button Content="Poner texto" HorizontalAlignment="Left" Margin="616,84,0,0" VerticalAlignment="Top" Click="Button_Click_3" RenderTransformOrigin="0.5,0.5" Width="117">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.335"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Button Content="Pausar Video" HorizontalAlignment="Left" Margin="797,12,0,0" VerticalAlignment="Top" Click="Button_Click_4" Width="135"/>
+        <Button Content="Ver video sistema" HorizontalAlignment="Left" Margin="616,12,0,0" VerticalAlignment="Top" Click="Button_Click_5"/>
+        <WebBrowser x:Name="webBrowser1" Margin="797,296,10,10"/>
+        <Button Content="Markdawn" HorizontalAlignment="Left" Margin="824,176,0,0" VerticalAlignment="Top" Click="Button_Click_6"/>
 
         <!-- Botón de Cierre / Cancelación con IsCancel="True" según el enunciado -->
         <Button Content="✖ Cerrar Visor" IsCancel="True" HorizontalAlignment="Right" Margin="0,12,24,0" VerticalAlignment="Top" Padding="14,6" FontWeight="SemiBold" Cursor="Hand" Click="Button_Cerrar_Click"/>

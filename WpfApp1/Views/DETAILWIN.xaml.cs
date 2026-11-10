@@ -150,7 +150,8 @@ namespace WpfApp1
 
         private void Button_Click_Texto(object sender, RoutedEventArgs e)
         {
-            if (Path.GetExtension(this.ruta).Equals(".txt", StringComparison.OrdinalIgnoreCase))
+            if (Path.GetExtension(this.ruta).Equals(".txt", StringComparison.OrdinalIgnoreCase)
+                || Path.GetExtension(this.ruta).Equals(".md", StringComparison.OrdinalIgnoreCase))
             {
                 using (StreamWriter sw = new StreamWriter(this.ruta, append: false))
                 {
@@ -161,9 +162,13 @@ namespace WpfApp1
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(this.ruta))
+            if (Path.GetExtension(this.ruta).Equals(".txt", StringComparison.OrdinalIgnoreCase) 
+                || Path.GetExtension(this.ruta).Equals(".md", StringComparison.OrdinalIgnoreCase))
             {
-                textoBloque.Text = File.ReadAllText(this.ruta);
+                if (File.Exists(this.ruta))
+                {
+                    textoBloque.Text = File.ReadAllText(this.ruta);
+                }
             }
         }
 
