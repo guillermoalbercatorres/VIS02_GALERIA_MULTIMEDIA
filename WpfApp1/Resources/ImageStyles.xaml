@@ -30,4 +30,8 @@
     <Style x:Key="btnZoomOut" TargetType="Button" BasedOn="{StaticResource btnZoomIn}">
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
+
+    <Style x:Key="btnZoomReset" TargetType="Button" BasedOn="{StaticResource btnZoomIn}">
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
 </ResourceDictionary>

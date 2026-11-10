@@ -18,6 +18,11 @@ namespace WpfApp1
         private string ruta = string.Empty;
         private string markdownActual = string.Empty;
 
+        /// <summary>
+        /// Permite a la ventana principal forzar el cierre definitivo al salir de la aplicación.
+        /// </summary>
+        public bool ForzarCierre { get; set; } = false;
+
         // Constructor por defecto
         public DETAILWIN()
         {
@@ -30,10 +35,23 @@ namespace WpfApp1
             CargarArchivo(rutaInicial);
         }
 
+        /// <summary>
+        /// Consulta el tema activo a través de su ventana propietaria (Owner) cumpliendo la especificación.
+        /// </summary>
+        public bool EsModoNocheActivo()
+        {
+            if (this.Owner is NAVEWIN navewin)
+            {
+                return navewin.EsModoNoche;
+            }
+
+            return Application.Current.Resources["AppBackgroundBrush"] is SolidColorBrush fondo
+                && fondo.Color == Color.FromRgb(0x18, 0x18, 0x1B);
+        }
+
         private void RenderizarMarkdown(string markdown)
         {
-            bool esModoNoche = Application.Current.Resources["AppBackgroundBrush"] is SolidColorBrush fondo
-                && fondo.Color == Color.FromRgb(0x18, 0x18, 0x1B);
+            bool esModoNoche = EsModoNocheActivo();
 
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             string contenidoHtml = Markdown.ToHtml(markdown, pipeline);
@@ -86,10 +104,10 @@ namespace WpfApp1
                     case ".webp":
                         MostrarPanel(panelImagen);
                         Imagen.Source = new BitmapImage(new Uri(nuevaRuta, UriKind.Absolute));
-                        var transformacion = (ScaleTransform)Imagen.RenderTransform;
-                        transformacion.ScaleX = 1;
-                        transformacion.ScaleY = 1;
-                        txtEstado.Text = "Imagen cargada. Utiliza los controles para ajustar el zoom.";
+                        zoomTransform.ScaleX = 1.0;
+                        zoomTransform.ScaleY = 1.0;
+                        CentrarScrollImagen();
+                        txtEstado.Text = "Imagen cargada y ajustada al visor. Usa los botones o Ctrl+Rueda para zoom.";
                         break;
 
                     case ".mp4":
@@ -100,6 +118,10 @@ namespace WpfApp1
                     case ".mkv":
                         MostrarPanel(panelMultimedia);
                         Video.Source = new Uri(nuevaRuta, UriKind.Absolute);
+                        if (sliderVolumen != null)
+                        {
+                            Video.Volume = sliderVolumen.Value;
+                        }
                         txtEstado.Text = "Archivo multimedia cargado. Pulsa Reproducir para comenzar.";
                         break;
 
@@ -151,26 +173,63 @@ namespace WpfApp1
         /// <summary>
         /// Evita que cerrar DETAILWIN (mediante la 'X' o Alt+F4) cierre toda la aplicación.
         /// Oculta la ventana para que pueda volver a ser mostrada sin perder estado.
+        /// Detiene la reproducción multimedia al cerrarse u ocultarse.
         /// </summary>
         protected override void OnClosing(CancelEventArgs e)
         {
-            e.Cancel = true;
-            this.Hide();
+            Video.Stop();
+            if (!ForzarCierre)
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
             base.OnClosing(e);
         }
 
         private void Button_Cerrar_Click(object sender, RoutedEventArgs e)
         {
+            Video.Stop();
             this.Hide();
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            if (System.Windows.Input.Keyboard.Modifiers.HasFlag(System.Windows.Input.ModifierKeys.Control) && Imagen.Source != null)
+            {
+                if (e.Delta > 0)
+                {
+                    BtnZoomIn_Click(sender, e);
+                }
+                else if (e.Delta < 0)
+                {
+                    BtnZoomOut_Click(sender, e);
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void CentrarScrollImagen()
+        {
+            if (scrollImagen == null) return;
+            scrollImagen.UpdateLayout();
+            if (scrollImagen.ScrollableWidth > 0)
+            {
+                scrollImagen.ScrollToHorizontalOffset(scrollImagen.ScrollableWidth / 2.0);
+            }
+            if (scrollImagen.ScrollableHeight > 0)
+            {
+                scrollImagen.ScrollToVerticalOffset(scrollImagen.ScrollableHeight / 2.0);
+            }
         }
 
         private void BtnZoomIn_Click(object sender, RoutedEventArgs e)
         {
             if (Imagen.Source is not null)
             {
-                var transformacion = (ScaleTransform)Imagen.RenderTransform;
-                transformacion.ScaleX = Math.Min(5, transformacion.ScaleX * 1.2);
-                transformacion.ScaleY = Math.Min(5, transformacion.ScaleY * 1.2);
+                zoomTransform.ScaleX = Math.Min(8.0, zoomTransform.ScaleX * 1.25);
+                zoomTransform.ScaleY = Math.Min(8.0, zoomTransform.ScaleY * 1.25);
+                CentrarScrollImagen();
+                txtEstado.Text = $"Zoom: {(int)(zoomTransform.ScaleX * 100)}%";
             }
         }
 
@@ -178,9 +237,21 @@ namespace WpfApp1
         {
             if (Imagen.Source is not null)
             {
-                var transformacion = (ScaleTransform)Imagen.RenderTransform;
-                transformacion.ScaleX = Math.Max(0.2, transformacion.ScaleX / 1.2);
-                transformacion.ScaleY = Math.Max(0.2, transformacion.ScaleY / 1.2);
+                zoomTransform.ScaleX = Math.Max(0.15, zoomTransform.ScaleX / 1.25);
+                zoomTransform.ScaleY = Math.Max(0.15, zoomTransform.ScaleY / 1.25);
+                CentrarScrollImagen();
+                txtEstado.Text = $"Zoom: {(int)(zoomTransform.ScaleX * 100)}%";
+            }
+        }
+
+        private void BtnZoomReset_Click(object sender, RoutedEventArgs e)
+        {
+            if (Imagen.Source is not null)
+            {
+                zoomTransform.ScaleX = 1.0;
+                zoomTransform.ScaleY = 1.0;
+                CentrarScrollImagen();
+                txtEstado.Text = "Zoom ajustado al espacio (100%).";
             }
         }
 
@@ -192,6 +263,22 @@ namespace WpfApp1
         private void BtnFontMinus_Click(object sender, RoutedEventArgs e)
         {
             textoBloque.FontSize = Math.Max(8, textoBloque.FontSize - 1);
+        }
+
+        private void CmbFuentes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (textoBloque != null && cmbFuentes?.SelectedItem is ComboBoxItem item && item.Content is string fuente)
+            {
+                textoBloque.FontFamily = new FontFamily(fuente);
+            }
+        }
+
+        private void SliderVolumen_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (Video != null)
+            {
+                Video.Volume = e.NewValue;
+            }
         }
 
         private void BtnGuardarTexto_Click(object sender, RoutedEventArgs e)

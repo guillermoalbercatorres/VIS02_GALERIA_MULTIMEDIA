@@ -32,55 +32,64 @@ VIS02/
 
 ---
 
-## 📋 Tareas Pendientes por Implementar
+## ✅ Estado de Implementación y Requisitos Cumplidos
 
-### 🟠 Prioridad 1: Rediseño Integral de la Ventana de Detalle (`DETAILWIN`)
+Todas las funcionalidades y requisitos especificados en el [enunciado.md](enunciado.md) han sido completamente implementados y verificados:
 
-Actualmente `DETAILWIN` cuenta con controles de prueba superpuestos y botones con coordenadas absolutas que deben ser reemplazados por una interfaz limpia, responsiva y dinámica según el tipo de archivo:
+### 🟢 Módulo 1: Sistema de Estilos y Recursos (Tres Niveles)
 
-- [x] **Limpieza de Controles y Layout Dinámico**:
-  - [x] Eliminar todos los botones de prueba antiguos con márgenes fijos.
-  - [x] Implementar una estructura de paneles (`Grid` o paneles intercambiables) donde **solo sea visible el visor correspondiente al archivo cargado**, ocultando los demás:
-    - Si es imagen $\rightarrow$ Mostrar únicamente panel de imagen y controles de zoom.
-    - Si es multimedia $\rightarrow$ Mostrar únicamente reproductor y controles de reproducción.
-    - Si es texto plano $\rightarrow$ Mostrar únicamente editor de texto y controles de tipografía.
-    - Si es Markdown $\rightarrow$ Mostrar únicamente el visor web renderizado.
-- [x] **Visor de Imágenes y Zoom (Requisito Enunciado)**:
-  - [x] Contenedor con `ScrollViewer` o `Canvas` para permitir desplazamiento.
-  - [x] Botón funcional de **Zoom In (+)** para aumentar la escala (`ScaleTransform`).
-  - [x] Botón funcional de **Zoom Out (-)** para reducir la escala.
-  - [ ] Botón de restablecer zoom / ajustar a ventana.
-- [x] **Visor Multimedia (Audio / Vídeo) (Requisito Enunciado)**:
-  - [x] Barra de control multimedia con botones estilizados de **Play** y **Pause** (además, **Stop**).
-  - [ ] Barra de progreso o control de volumen (opcional/recomendado).
-- [x] **Visor de Texto Plano y Tipografía (Requisito Enunciado)**:
-  - [ ] Botones o selector desplegable de **Fuente (FontFamily)** (ej. Consolas, Arial, Segoe UI, Courier New).
-  - [x] Botones de incremento y reducción de tamaño de letra (**FontSize +** / **FontSize -**).
-  - [x] *Extra:* persistencia de los cambios en disco con `File.WriteAllText`.
-- [x] **Visor Markdown (`Markdig`)**:
-  - [x] Renderizado HTML estilizado e integrado en `WebBrowser` de manera fluida (con CSS dinámico según modo claro/oscuro).
-- [x] **Manejo de Archivos no Soportados**:
-  - Si el usuario selecciona un archivo cuya extensión no es visualizable internamente (ej. `.pdf`, `.zip`, `.exe`), delegar la apertura directamente a Windows con `Process.Start` desde `NAVEWIN` sin dejar la ventana `DETAILWIN` abierta o en blanco.
+- [x] **Nivel 1: Recursos Globales de Aplicación (`App.xaml`)**:
+  - Paleta base para **Modo Normal (Claro)** y **Modo Noche (Oscuro)** mediante `DynamicResource`.
+  - Estilos globales implícitos para `Grid`, `TextBox`, `Label`, `Button`, `TreeView`, `TreeViewItem`, `TextBlock`, `CheckBox` y `ComboBox`.
+  - Plantilla personalizada de `CheckBox` con tick vectorial de alto contraste y visibilidad perfecta en ambos temas.
+- [x] **Nivel 2: Recursos de Ventana (`Window.Resources`)**:
+  - En `NAVEWIN.xaml`: Estilos propios para botones de navegación.
+  - En `DETAILWIN.xaml`: Estilos diferenciados con bordes redondeados y sombras para botones de acción.
+- [x] **Nivel 3: Diccionarios de Recursos Independientes (`Resources/`)**:
+  - `ImageStyles.xaml`: Estilos para contenedor, imagen y botones de Zoom.
+  - `MediaStyles.xaml`: Estilos para reproductor y botones Play, Pause, Stop y Slider de volumen.
+  - `TextStyles.xaml`: Estilos para editor de texto, tamaños de fuente y selector de tipografía.
+  - `MarkdownStyles.xaml`: Estilos para visor WebBrowser y contenedor Markdown.
+- [x] **Conmutación y Herencia de Tema**:
+  - Switch interactivo `chkModoNoche` en `NAVEWIN` para alternar la paleta en caliente.
+  - Herencia estricta de tema en `DETAILWIN` consultando el estado a través de la propiedad pública `EsModoNoche` de su `Owner`.
 
 ---
 
-### 🟡 Prioridad 2: Sistema de Estilos y Recursos (Módulo 1)
+### 🟢 Módulo 2: Ventana Principal (`NAVEWIN`)
 
-El sistema de estilos debe dividirse estrictamente en tres niveles según el enunciado:
+- [x] **Ruta Inicial del Sistema**: Navegación por defecto a la carpeta "Mis imágenes" (`SpecialFolder.MyPictures`).
+- [x] **Selector de Carpeta**: Diálogo `OpenFolderDialog` para cambiar el directorio raíz en cualquier momento.
+- [x] **Explorador Dinámico `TreeView`**:
+  - Carga bajo demanda (*Lazy Loading*) para máximo rendimiento sin bloqueos.
+  - Iconos contextuales por tipo de fichero.
+  - Apertura en `DETAILWIN` mediante doble clic, tecla <kbd>Enter</kbd> o botón dedicado.
+- [x] **Cierre Limpio**: Liberación controlada de ventanas hijas y cierre ordenado de la aplicación (`ShutdownMode="OnMainWindowClose"`).
 
-- [x] **Nivel 1: Recursos Globales de Aplicación (`App.xaml`)**:
-  - Definir la paleta para **Modo Normal (Claro)**: `FondoBrush`, `TextoBrush`, `BordeBrush`.
-  - Definir la paleta para **Modo Noche (Oscuro)**: `FondoBrush`, `TextoBrush`, `BordeBrush`.
-  - Crear estilos implícitos o dinámicos (`DynamicResource`) para `Grid`, `TextBox`, `Label` y `Button`.
-- [x] **Nivel 2: Recursos de Ventana (`Window.Resources`)**:
-  - [x] Definir en `NAVEWIN.xaml` estilos propios para sus botones (selector de carpetas, opciones).
-  - [x] Definir en `DETAILWIN.xaml` estilos propios para sus botones de acción (zoom, play/pause, fuentes).
-- [x] **Nivel 3: Diccionarios de Recursos Independientes (`Resources/`)**:
-  - [x] `ImageStyles.xaml`: Estilos específicos para los botones de Zoom.
-  - [x] `MediaStyles.xaml`: Estilos específicos para los controles de reproducción.
-  - [x] `TextStyles.xaml`: Estilos específicos para las herramientas de texto y tamaño.
-  - [x] `MarkdownStyles.xaml`: Estilos visuales del visor Markdown.
-  - Enlazados mediante `MergedDictionaries`.
-- [x] **Lógica de Conmutación de Tema en Tiempo Real**:
-  - [x] Conectar el switch/checkbox `chkModoNoche` de `NAVEWIN` para alternar dinámicamente los recursos de `App.xaml` en caliente.
-  - [x] Sincronizar el tema en `DETAILWIN` (`NAVEWIN` notifica a la ventana de detalle si está abierta).
+---
+
+### 🟢 Módulo 3: Ventana de Detalle (`DETAILWIN`)
+
+- [x] **Layout Dinámico y Responsivo**: Visores especializados que se activan según la extensión del archivo, ocultando el resto de paneles.
+- [x] **Visor de Imágenes**:
+  - Autoajuste inicial inteligente al tamaño de la ventana (`ViewportWidth` / `ViewportHeight`).
+  - Renderizado de alta resolución (`RenderOptions.BitmapScalingMode="HighQuality"`).
+  - Controles de **Zoom In (+)**, **Zoom Out (-)** y botón de **Ajustar (`↺ Ajustar`)**.
+  - Zoom interactivo mediante combinación <kbd>Ctrl</kbd> + Rueda del ratón.
+  - Centrado automático del scroll en el medio de la imagen al realizar zoom.
+- [x] **Visor Multimedia (Audio / Vídeo)**:
+  - Control de reproducción completo: **Play**, **Pause** y **Stop**.
+  - Control deslizante (`Slider`) para ajuste de **Volumen**.
+  - Detención automática de la reproducción al cerrar u ocultar el visor.
+- [x] **Visor de Texto Plano**:
+  - Editor `TextBox` multilínea con barras de desplazamiento automáticas.
+  - Selector desplegable de **Fuente tipográfica** (`FontFamily`: Consolas, Segoe UI, Arial, Courier New, Times New Roman).
+  - Botones de tamaño de texto (**FontSize + / -**).
+  - Botón de guardado persistente de cambios en disco (`File.WriteAllText`).
+- [x] **Visor Markdown**:
+  - Conversión de `.md` a HTML enriquecido mediante `Markdig`.
+  - Integración en `WebBrowser` con estilos CSS adaptados dinámicamente a Modo Día o Modo Noche.
+- [x] **Archivos no Soportados**:
+  - Delegación al sistema operativo mediante `Process.Start` con la aplicación predeterminada del usuario.
+- [x] **Cierre Controlado**:
+  - Botón de cancelación con `IsCancel="True"` y cierre mediante <kbd>Esc</kbd>, <kbd>Alt</kbd>+<kbd>F4</kbd> o botón `X` sin cerrar la aplicación principal.

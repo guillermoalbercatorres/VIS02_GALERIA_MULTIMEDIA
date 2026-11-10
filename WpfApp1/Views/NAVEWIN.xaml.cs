@@ -310,5 +310,20 @@ namespace WpfApp1
 
             ventanaDetalle?.ActualizarTema();
         }
+
+        /// <summary>
+        /// Garantiza el cierre completo y limpio de la aplicación y de la ventana de detalle,
+        /// evitando que queden procesos zombis en segundo plano.
+        /// </summary>
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            if (ventanaDetalle != null)
+            {
+                ventanaDetalle.ForzarCierre = true;
+                ventanaDetalle.Close();
+            }
+            Application.Current.Shutdown();
+        }
     }
 }
