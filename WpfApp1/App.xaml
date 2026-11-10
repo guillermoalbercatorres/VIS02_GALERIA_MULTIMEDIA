@@ -19,6 +19,9 @@
 
         <SolidColorBrush x:Key="ControlBackgroundBrush" Color="White"/>
         <SolidColorBrush x:Key="ControlBorderBrush" Color="#FFCED4DA"/>
+        <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#FFE4E4E7"/>
+        <SolidColorBrush x:Key="TreeViewBackgroundBrush" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="TreeViewForegroundBrush" Color="#FF18181B"/>
 
         <!-- ========================================================= -->
         <!-- 2. ESTILOS IMPLÍCITOS (Sin x:Key)                         -->
@@ -26,6 +29,7 @@
         <!-- toda la aplicación sin tener que llamarlos uno a uno.     -->
         <!-- ========================================================= -->
 
+        <!-- Los estilos implícitos centralizan la apariencia base de la aplicación. -->
         <!-- Estilo Global para GRID -->
         <Style TargetType="Grid">
             <!-- El Grid suele actuar como contenedor principal, le damos el color de fondo general -->
@@ -62,6 +66,18 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- Estilo Global para TREEVIEW -->
+        <Style TargetType="TreeView">
+            <Setter Property="Background" Value="{DynamicResource TreeViewBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TreeViewForegroundBrush}" />
+        </Style>
+
+        <!-- Estilo Global para ELEMENTOS DEL TREEVIEW -->
+        <Style TargetType="TreeViewItem">
+            <Setter Property="Background" Value="Transparent" /> 
+            <Setter Property="Foreground" Value="{DynamicResource TreeViewForegroundBrush}" />
         </Style>
 
         <!-- Estilo Global para TEXTBLOCK -->
