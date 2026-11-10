@@ -280,9 +280,15 @@ namespace WpfApp1
             // Bordes de controles
             Application.Current.Resources["ControlBorderBrush"] =
                 new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3F3F46"));
+            // Fondo y texto del árbol de navegación
+            Application.Current.Resources["TreeViewBackgroundBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#252526"));
+            Application.Current.Resources["TreeViewForegroundBrush"] =
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4F4F5"));
             // Fondo específico para botones
             Application.Current.Resources["ButtonBackgroundBrush"] =
                 new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3F3F46"));
+            ventanaDetalle?.ActualizarTema();
         }
 
 
@@ -296,8 +302,13 @@ namespace WpfApp1
             Application.Current.Resources["AppForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF1C1E21"));
             Application.Current.Resources["ControlBackgroundBrush"] = new SolidColorBrush(Colors.White);
             Application.Current.Resources["ControlBorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCED4DA"));
+            // Fondo y texto del árbol de navegación
+            Application.Current.Resources["TreeViewBackgroundBrush"] = new SolidColorBrush(Colors.White);
+            Application.Current.Resources["TreeViewForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#18181B"));
             Application.Current.Resources["ButtonBackgroundBrush"] =
                 new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E4E4E7"));
+
+            ventanaDetalle?.ActualizarTema();
         }
     }
 }
