@@ -24,4 +24,9 @@
 
     <Style x:Key="btnPause" TargetType="Button" BasedOn="{StaticResource btnPlay}" />
     <Style x:Key="btnStop" TargetType="Button" BasedOn="{StaticResource btnPlay}" />
+
+    <Style x:Key="mediaSlider" TargetType="Slider">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
 </ResourceDictionary>
